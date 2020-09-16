@@ -1,0 +1,103 @@
+
+# Automated Chaos Recipe Helmets
+SHOW_CHAOS_HELMET
+SetBorderColor 122 40 23 255
+SetFontSize 38
+ItemLevel >= 60
+Rarity Rare
+Class == "Helmets"
+SetBackgroundColor 122 40 23 255
+SetTextColor 255 255 255 255
+MinimapIcon 0 Yellow Pentagon
+
+# Automated Chaos Recipe Gloves
+SHOW_CHAOS_GLOVES
+SetBorderColor 107 35 70 255
+SetFontSize 38
+ItemLevel >= 60
+Rarity Rare
+Class == "Gloves"
+SetBackgroundColor 107 35 70 255
+SetTextColor 255 255 255 255
+MinimapIcon 0 Yellow Pentagon
+
+# Automated Chaos Recipe Boots
+SHOW_CHAOS_BOOTS 
+SetBorderColor 72 116 44 255
+SetFontSize 38
+ItemLevel >= 60
+Rarity Rare
+Class == "Boots"
+SetBackgroundColor 72 116 44 255
+SetTextColor 255 255 255 255
+MinimapIcon 0 Yellow Pentagon
+
+# Automated Chaos Recipe Armor
+SHOW_CHAOS_ARMOR 
+SetBorderColor 168 98 35 255
+SetFontSize 38
+ItemLevel >= 60
+Rarity Rare
+Class == "Body Armours"
+SetBackgroundColor 168 98 35 255
+SetTextColor 255 255 255 255
+MinimapIcon 0 Yellow Pentagon
+
+# Automated Chaos Recipe 1H
+SHOW_CHAOS_ONE_HANDED_WEAPON
+SetBorderColor 35 88 197 255
+SetFontSize 38
+ItemLevel >= 60
+Rarity Rare
+Class == "Daggers" "One Hand Axes" "One Hand Maces" "One Hand Swords" "Sceptres" "Wands"
+Height = 3
+Width = 1
+SetBackgroundColor 35 88 197 255
+SetTextColor 255 255 255 255
+MinimapIcon 0 Yellow Pentagon
+
+# Automated Chaos Recipe 2H
+SHOW_CHAOS_TWO_HANDED_WEAPON
+SetBorderColor 34 83 143 255
+SetFontSize 38
+ItemLevel >= 60
+Rarity Rare
+Class == "Bows"
+Height = 3
+Width = 2
+SetBackgroundColor 34 83 143 255
+SetTextColor 255 255 255 255
+MinimapIcon 0 Yellow Pentagon
+
+# Automated Chaos Recipe Amulet
+SHOW_CHAOS_AMULET 
+SetFontSize 38
+ItemLevel >= 60
+Rarity Rare
+SetBackgroundColor 49 33 112 255
+SetBorderColor 49 33 112 255
+SetTextColor 255 255 255 255
+Class == "Amulets"
+MinimapIcon 0 Yellow Pentagon
+
+# Automated Chaos Recipe Belt
+SHOW_CHAOS_BELT 
+SetBorderColor 140 25 17 255
+SetFontSize 38
+ItemLevel >= 60
+Rarity Rare
+Class == "Belts"
+SetBackgroundColor 140 25 17 255
+SetTextColor 255 255 255 255
+MinimapIcon 0 Yellow Pentagon
+
+# Automated Chaos Recipe Ring
+SHOW_CHAOS_RING 
+SetBorderColor 37 78 90 255
+SetFontSize 38
+ItemLevel >= 60
+Rarity Rare
+Class == "Rings"
+SetBackgroundColor 37 78 90 255
+SetTextColor 255 255 255 255
+MinimapIcon 0 Yellow Pentagon

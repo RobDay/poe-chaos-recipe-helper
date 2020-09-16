@@ -1,0 +1,35 @@
+window:
+  resolutionX: 1920
+  resolutionY: 1080
+
+stash:
+  tabIndex: 4
+  quadTab: true
+
+  overlay:
+    # customize the position of the overlay, assuming it doesnt fit perfectly on your screen size
+    offset:
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+
+recipe:
+  preferRegal: false
+
+  // TODO: Add the rest of the config options
+# Set limits to the number of items you setup.
+# Valid choices: helmet, ring, amulet, belt, armor, ONE_HANDED_WEAPON, TWO_HANDED_WEAPON, boots, gloves
+# The default value is uses, unless a slot-specific value is included
+
+filter:
+  location: </path/to/location>
+  itemLimit:
+    default: 12
+    RING: 24
+    AMULET: 24
+    BELT: 24
+
+account:
+  username: <some_name>
+  poeSessID: <some_sess_id.

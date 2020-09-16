@@ -1,0 +1,8 @@
+{
+  "importSort": {
+    ".js, .jsx, .ts, .tsx": {
+      "style": "module"
+    }
+  },
+  "printWidth": 120
+}
