@@ -1,7 +1,7 @@
-import { app, BrowserWindow } from 'electron'
+const { app, BrowserWindow } = require('electron')
 
-import { join } from 'path'
-import { format } from 'url'
+const path = require('path')
+const url = require('url')
 
 let mainWindow
 
@@ -9,15 +9,18 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    transparent: true,
+    alwaysOnTop: true,
     webPreferences: {
       nodeIntegration: true,
     },
   })
+  mainWindow.setIgnoreMouseEvents(true);
 
   mainWindow.loadURL(
     process.env.ELECTRON_START_URL ||
-      format({
-        pathname: join(__dirname, '/../public/index.html'),
+      url.format({
+        pathname: path.join(__dirname, '/../public/index.html'),
         protocol: 'file:',
         slashes: true,
       })
