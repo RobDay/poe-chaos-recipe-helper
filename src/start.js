@@ -11,10 +11,8 @@ let window2;
 
 
 function createWindow() {
-  const cookie = { url: 'http://www.yahoo.com', name: 'POESESSID', value: '***REMOVED***' }
-  const cookie2 = { url: 'https://www.pathofexile.com', name: 'POESESSID', value: '***REMOVED***' }
+  const cookie = { url: 'https://www.pathofexile.com', name: 'POESESSID', value: '***REMOVED***' }
 session.defaultSession.cookies.set(cookie)
-session.defaultSession.cookies.set(cookie2)
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
@@ -64,7 +62,7 @@ session.defaultSession.cookies.set(cookie2)
   })
 }
 
-app.on('ready', createWindow)
+app.whenReady().then(createWindow)
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
