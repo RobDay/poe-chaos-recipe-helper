@@ -2,11 +2,16 @@ export enum ItemCategory {
     Helmet = "HELMET",
     Belt = "BELT",
     Armor = "ARMOR",
+    Gloves = "GLOVES",
+    Boots = "BOOTS",
     OneHandedWeapon = "ONE_HANDED_WEAPON",
     TwoHandedWeapon = "TWO_HANDED_WEAPON",
     Ring = "RING",
-    Amulet = "Amulet"
+    Amulet = "Amulet",
+    Unknown = "Unknown"
 }
+
+// TODO: Add influence
 
 export enum ItemType  {
     Normal,
