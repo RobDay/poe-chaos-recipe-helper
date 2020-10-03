@@ -41,8 +41,18 @@ const REGEX_TO_CATEGORY = new Map([
 ])
 
 export function adaptStashAPIResponse(response: StashAPIResponse): StashItem[] {
-    
-
+    return response.items.map((responseItem) => {
+        return {
+            x: responseItem.x,
+            y: responseItem.y,
+            width: responseItem.w,
+            height: responseItem.h,
+            ilvl: responseItem.ilvl,
+            name: responseItem.name,
+            category: typelineToItemCategory(responseItem.typeLine, responseItem.w),
+            type: 
+        }
+    })
     return [];
 }
 
@@ -69,4 +79,8 @@ function typelineToItemCategory(typeLine: string, width: number): ItemCategory {
 
     console.log(`No known item category for typeLine: ${typeLine}`)
     return ItemCategory.Unknown
+}
+
+function frameTypeToItemType(frameType: number): ItemType {
+    return frameType;
 }

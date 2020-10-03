@@ -14,16 +14,16 @@ export enum ItemCategory {
 // TODO: Add influence
 
 export enum ItemType  {
-    Normal,
-    Magic,
-    Rare,
-    Unique,
-    Gem,
-    Currency,
-    DivinationCard,
-    QuestItem,
-    Prophecy,
-    Relic
+    Normal = 0,
+    Magic = 1,
+    Rare = 2,
+    Unique = 3,
+    Gem = 4,
+    Currency = 5,
+    DivinationCard = 6,
+    QuestItem = 7,
+    Prophecy = 8,
+    Relic = 9
 }
 
 export type StashItem = {
@@ -34,9 +34,7 @@ export type StashItem = {
     y: number;
     ilvl: number;
     width: number;
-    height: number;
-    itemType: string
-}
+    height: number;}
 
 export type StashAPIContentItem = {
     w: number;
@@ -47,6 +45,7 @@ export type StashAPIContentItem = {
     typeLine: string;
     frameType: number;
     inventoryId: string;
+    ilvl: number;
 }
 
 export type StashAPIResponse = {
