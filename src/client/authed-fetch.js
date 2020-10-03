@@ -8,9 +8,12 @@ export default function authedFetch(
   let headers = fetchOptions.headers || new Headers();
 //   console.log(`token is ${user.token}`);
 // TODO: Remove the POESessid from code
-  headers.append("Cookie", `POESESSID=5b6a653b9212f84e9a0f88a4d5274f84`);
-  headers.append("Access-Control-Allow-Origin", "*");
-  headers.append('Accept', 'application/json');
+  // headers.append("Cookie", "POESESSID=***REMOVED***");
+  // headers.append("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:59.0) Gecko/20100101 Firefox/59.0");
+  // headers.append("Access-Control-Allow-Origin", "*");
+  // headers.append('Accept', 'application/json');
+  // fetchOptions.mode = 'no-cors';
+  fetchOptions.credentials = "include";
   fetchOptions.headers = headers;
   fetchOptions.method = fetchOptions.method || "GET";
 

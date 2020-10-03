@@ -5,8 +5,8 @@ import './App.css';
 import getStashContent from './client/get-stash-content'
 
 function App() {
-  // let json = getStashContent('yousillygoose', 1);
-  // console.log(json);
+  let json = getStashContent('yousillygoose', 1);
+  console.log(json);
   return (
     <div className="App">
       <header className="App-header">
