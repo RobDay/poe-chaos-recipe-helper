@@ -8,6 +8,10 @@ const GLOVE_REGEX = / Gauntlets$| Gloves$| Mitts$/
 const BOOTS_REGEX = / Greaves$| Boots$| Shoes$| Slippers$/
 const CHEST_REGEX = / Vest$| Chestplate$| Plate$| Jerkin$| Tunic$| Leather$| Garb$| Robe$| Vestment$| Regalia$| Wrap$| Silks$| Brigandine$| Doublet$| Full Sale Armour$| Lamellar$| Wyrmscale$| Dragonscale$| Coat$| Ringmail$| Chainmail$| Hauberk$| Jacket$| Raiment$| Armour$/
 const HAT_REGEX = / Hat$| Helmet$| Burgonet$| Cap$| Pelt$| Hood$| Tricorne$| Circlet$| Cage$| Helm$| Sallet$| Bascinet$| Coif$| Crown$| Mask$/
+const JEWEL_REGEX = /Jewel/;
+const SPLINTER_REGEX = / Splinter$/
+
+// TODO: There are so many more, but we just need the equipable inventory items
 
 const TWO_HANDED_REGEX = new RegExp(''
     + / Bow$/.source //Bows
@@ -37,10 +41,12 @@ const REGEX_TO_CATEGORY = new Map([
     [BOOTS_REGEX, ItemCategory.Boots],
     [CHEST_REGEX, ItemCategory.Amulet],
     [HAT_REGEX, ItemCategory.Helmet],
-    [RING_REGEX, ItemCategory.Ring]
+    [RING_REGEX, ItemCategory.Ring],
+    // [JEWEL_REGEX, ItemCategory.Jewel],
+    // [SPLINTER_REGEX, ItemCategory.Splinter]
 ])
 
-export function adaptStashAPIResponse(response: StashAPIResponse): StashItem[] {
+export default function adaptStashAPIResponse(response: StashAPIResponse): StashItem[] {
     return response.items.map((responseItem) => {
         return {
             x: responseItem.x,
@@ -48,19 +54,21 @@ export function adaptStashAPIResponse(response: StashAPIResponse): StashItem[] {
             width: responseItem.w,
             height: responseItem.h,
             ilvl: responseItem.ilvl,
-            name: responseItem.name,
-            category: typelineToItemCategory(responseItem.typeLine, responseItem.w),
-            type: 
+            name: `${responseItem.name} ${responseItem.typeLine}`,
+            category: typelineToItemCategory(responseItem.typeLine, responseItem.w, responseItem.h),
+            type: frameTypeToItemType(responseItem.frameType),
+            identified: responseItem.identified
         }
+    }).filter((item) => {
+        return item.category !== ItemCategory.Unknown
     })
-    return [];
 }
 
 // console.log(/^([a-z0-9]{5,})$/.test('abc1'));
-function typelineToItemCategory(typeLine: string, width: number): ItemCategory {
+function typelineToItemCategory(typeLine: string, width: number, height: number): ItemCategory {
 
     // Regexes which are mutually exclusive
-    let deterministicRegexes = [BELT_REGEX, RING_REGEX, AMULET_REGEX, GLOVE_REGEX, BOOTS_REGEX, CHEST_REGEX, HAT_REGEX];
+    let deterministicRegexes = Array.from(REGEX_TO_CATEGORY.keys())
     for (let regex of deterministicRegexes) {
         if (regex.test(typeLine)) {
             return REGEX_TO_CATEGORY.get(regex) || ItemCategory.Unknown
@@ -76,8 +84,9 @@ function typelineToItemCategory(typeLine: string, width: number): ItemCategory {
         }
     }
 
-
-    console.log(`No known item category for typeLine: ${typeLine}`)
+    if (width !== 1 && height !== 1) {
+        console.log(`No known item category for typeLine: ${typeLine}`)
+    }
     return ItemCategory.Unknown
 }
 

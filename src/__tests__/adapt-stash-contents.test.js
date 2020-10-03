@@ -1,5 +1,10 @@
+import adaptStashAPIResponse from '../adapters/adapt-stash-contents'
+import { getValidResponse , getValidResponseAdapted} from './mocks/gets-stashes-response'
 
-
-it('renders without crashing', () => {
-    expect(true).toBeTruthy();
- });
+describe('adapt stash contents', () => {
+    test('renders without crashing', () => {
+        let result = adaptStashAPIResponse(getValidResponse());
+        console.log(result);
+        expect(result).toEqual(getValidResponseAdapted());
+     });
+})

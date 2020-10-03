@@ -8,6 +8,8 @@ export enum ItemCategory {
     TwoHandedWeapon = "TWO_HANDED_WEAPON",
     Ring = "RING",
     Amulet = "Amulet",
+    Jewel = "Jewel",
+    Splinter = "Splinter",
     Unknown = "Unknown"
 }
 
@@ -34,7 +36,9 @@ export type StashItem = {
     y: number;
     ilvl: number;
     width: number;
-    height: number;}
+    height: number;
+    identified: boolean;
+}
 
 export type StashAPIContentItem = {
     w: number;
@@ -46,6 +50,7 @@ export type StashAPIContentItem = {
     frameType: number;
     inventoryId: string;
     ilvl: number;
+    identified: boolean;
 }
 
 export type StashAPIResponse = {
