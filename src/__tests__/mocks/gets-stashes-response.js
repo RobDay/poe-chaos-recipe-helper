@@ -6878,7 +6878,7 @@ export let getValidResponseAdapted = () => {
       height: 1,
       ilvl: 85,
       name: 'Dusk Pendant Onyx Amulet',
-      category: 'Amulet',
+      category: 'AMULET',
       type: 2,
       identified: true
     },
@@ -6900,7 +6900,7 @@ export let getValidResponseAdapted = () => {
       height: 1,
       ilvl: 84,
       name: 'Dread Medallion Blue Pearl Amulet',
-      category: 'Amulet',
+      category: 'AMULET',
       type: 2,
       identified: true
     },
@@ -6944,7 +6944,7 @@ export let getValidResponseAdapted = () => {
       height: 1,
       ilvl: 83,
       name: 'Behemoth Noose Turquoise Amulet',
-      category: 'Amulet',
+      category: 'AMULET',
       type: 2,
       identified: true
     },
@@ -6966,7 +6966,7 @@ export let getValidResponseAdapted = () => {
       height: 1,
       ilvl: 83,
       name: 'Woe Heart Onyx Amulet',
-      category: 'Amulet',
+      category: 'AMULET',
       type: 2,
       identified: true
     },
@@ -7010,7 +7010,7 @@ export let getValidResponseAdapted = () => {
       height: 1,
       ilvl: 84,
       name: "Shaper's Seed Agate Amulet",
-      category: 'Amulet',
+      category: 'AMULET',
       type: 3,
       identified: true
     },

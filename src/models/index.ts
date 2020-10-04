@@ -7,10 +7,10 @@ export enum ItemCategory {
     OneHandedWeapon = "ONE_HANDED_WEAPON",
     TwoHandedWeapon = "TWO_HANDED_WEAPON",
     Ring = "RING",
-    Amulet = "Amulet",
-    Jewel = "Jewel",
-    Splinter = "Splinter",
-    Unknown = "Unknown"
+    Amulet = "AMULET",
+    // Jewel = "Jewel",
+    // Splinter = "Splinter",
+    // Unknown = "Unknown"
 }
 
 // TODO: Add influence
