@@ -180,7 +180,7 @@ export default class RecipeManager {
                 swappedItems.push(fullRecipeSet.oneHandedWeaponA);
                 fullRecipeSet.oneHandedWeaponA = chaosItems[maxCategory].pop();
             } else if (chaosItems[maxCategory].length <= 1) {
-                    // we can't make the swap 
+                    // we can't make the swap   
             } else {
                 swappedItems.push(fullRecipeSet.twoHandedWeapon!)
                 fullRecipeSet.twoHandedWeapon = undefined;
@@ -199,7 +199,67 @@ export default class RecipeManager {
     // Append a partialrecipe with chaosItems. The resulting recipe set will potentially fail if not enough chaos items remain
     // NOTE: This will mutate the passed in chaosItems
     _fillMissingWithChaosItems(partialRecipeSet: RecipeSet, chaosItems: GroupedStashItems): RecipeSet {
+        if (!partialRecipeSet.helmet) {
+            partialRecipeSet.helmet = chaosItems.HELMET.pop();
+        }
+        if (!partialRecipeSet.belt) {
+            partialRecipeSet.belt = chaosItems.BELT.pop();
+        }
+        if (!partialRecipeSet.armor) {
+            partialRecipeSet.armor = chaosItems.ARMOR.pop();
+        }
+       if (!partialRecipeSet.gloves) {
+            partialRecipeSet.gloves = chaosItems.GLOVES.pop();
+        }
+        if (!partialRecipeSet.boots) {
+            partialRecipeSet.boots = chaosItems.BOOTS.pop();
+        }
+        if (!partialRecipeSet.ringA) {
+            partialRecipeSet.ringA = chaosItems.RING.pop();
+        }
+        if (!partialRecipeSet.ringB) {
+            partialRecipeSet.ringB = chaosItems.RING.pop();
+        }
+        if (!partialRecipeSet.amulet) {
+            partialRecipeSet.amulet = chaosItems.AMULET.pop();
+        }
 
+        // Weapons are always fun.
+        // TODO: We need to refactor out the above logic 
+        if (partialRecipeSet.twoHandedWeapon || (partialRecipeSet.oneHandedWeaponA && partialRecipeSet.oneHandedWeaponB)) {
+            // Do nothing. We have both weapons
+        } else if (!partialRecipeSet.twoHandedWeapon && !partialRecipeSet.oneHandedWeaponA && !partialRecipeSet.oneHandedWeaponB) {
+            // No weapons are there
+            if (chaosItems.twoHandedWeapon.length > 0) {
+                partialRecipeSet.twoHandedWeapon = chaosItems.TWO_HANDED_WEAPON.pop();
+            } else {
+                partialRecipeSet.oneHandedWeaponA = chaosItems.ONE_HANDED_WEAPON.pop()
+                partialRecipeSet.oneHandedWeaponB = chaosItems.ONE_HANDED_WEAPON.pop()
+            }
+        } else {
+            // We know it doesn't have a two handed weapon, but must have a one-handed weapon
+            if (!partialRecipeSet.oneHandedWeaponA) {
+                partialRecipeSet.oneHandedWeaponA = chaosItems.ONE_HANDED_WEAPON.pop()
+            }
+            if (!partialRecipeSet.oneHandedWeaponB) {
+                partialRecipeSet.oneHandedWeaponB = chaosItems.ONE_HANDED_WEAPON.pop()
+            }
+
+            if (!partialRecipeSet.oneHandedWeaponA || !partialRecipeSet.oneHandedWeaponB) {
+                // If we hit this case, we dont have enough chas items to fall back
+                if (partialRecipeSet.oneHandedWeaponA) {
+                    chaosItems.ONE_HANDED_WEAPON.push(partialRecipeSet.oneHandedWeaponA)
+                    partialRecipeSet.oneHandedWeaponA = undefined;
+                }
+                if (partialRecipeSet.oneHandedWeaponB) {
+                    chaosItems.ONE_HANDED_WEAPON.push(partialRecipeSet.oneHandedWeaponB)
+                    partialRecipeSet.oneHandedWeaponB = undefined;
+                }
+                partialRecipeSet.oneHandedWeaponA = undefined;
+                partialRecipeSet.oneHandedWeaponB = undefined;
+                partialRecipeSet.twoHandedWeapon = chaosItems.TWO_HANDED_WEAPON.pop()
+            }
+        }
     }
 
     // TODO: Should this do chaos or regal validation?
