@@ -1,6 +1,7 @@
 import React from 'react';
 
-import {ItemCategory} from '../models/index'
+import {ItemCategory} from '../../models/index'
+import ItemCountCell from './item-count-cell'
 
 type PropsType  = {
     itemCounts: {
