@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import ItemCount from './components/item-count'
+import ItemCount from './components/item-count/item-count-list'
 import {ItemCategory} from './models/index'
 
 import getStashContent from './client/get-stash-content'
