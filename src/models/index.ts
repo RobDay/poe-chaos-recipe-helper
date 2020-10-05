@@ -10,8 +10,10 @@ export enum ItemCategory {
     Amulet = "AMULET",
     // Jewel = "Jewel",
     // Splinter = "Splinter",
-    // Unknown = "Unknown"
+    Unknown = "Unknown"
 }
+
+export type ItemCategoryKeys = keyof ItemCategory;
 
 // TODO: Add influence
 

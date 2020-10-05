@@ -1,5 +1,5 @@
 
-import { ItemCategory, StashItem } from "./models/index";
+import { ItemCategory, StashItem, ItemCategoryKeys} from "./models/index";
 
 type RecipeSet = {
     helmet?: StashItem;
@@ -27,6 +27,7 @@ type GroupedStashItems = {
     [ItemCategory.TwoHandedWeapon]: StashItem[];
     [ItemCategory.Ring]: StashItem[];
     [ItemCategory.Amulet]: StashItem[];
+    [ItemCategory.Unknown]: StashItem[];
 }
 export default class RecipeManager {
     items: StashItem[]
@@ -36,7 +37,7 @@ export default class RecipeManager {
     }
 
     _generateItemStatistics(items: StashItem[]) {
-        let initialState = {
+        let initialState: { [key: string]: number; } = {
             [ItemCategory.Helmet]: 0,
             [ItemCategory.Belt]: 0,
             [ItemCategory.Armor]: 0,
@@ -51,6 +52,7 @@ export default class RecipeManager {
         .filter((item) => {
             return item.ilvl >= 60
         }).reduce((result, item) => {
+
             result[item.category]+=1
             return result;
         }, initialState);
@@ -73,7 +75,8 @@ export default class RecipeManager {
             [ItemCategory.OneHandedWeapon]: [],
             [ItemCategory.TwoHandedWeapon]: [],
             [ItemCategory.Ring]: [],
-            [ItemCategory.Amulet]: []
+            [ItemCategory.Amulet]: [],
+            [ItemCategory.Unknown]: []
         }
         // TODO: Does this deep copy?
         let chaosLevelItems = {
@@ -81,6 +84,7 @@ export default class RecipeManager {
         }
         for (let item of this.items) {
             if (item.ilvl > 74) {
+                item.category
                 regalLevelItems[item.category].push(item);
             } else {
                 chaosLevelItems[item.category].push(item);
@@ -140,10 +144,11 @@ export default class RecipeManager {
         let maxCategory: ItemCategory | undefined;
         let maxItemCount = 0
  
-        //TODO: Do this more typescirpt-esqe
-        for (const [category, items] of Object.entries(chaosItems)) {
+        const properties: ItemCategory[] = [ItemCategory.Helmet, ItemCategory.Belt, ItemCategory.Armor, ItemCategory.Gloves, ItemCategory.Boots, ItemCategory.OneHandedWeapon, ItemCategory.TwoHandedWeapon, ItemCategory.Ring, ItemCategory.Amulet];
+
+        for (const category of properties) {
+            const items = chaosItems[category];
             if (items.length > maxItemCount) {
-                maxCategory = category;
                 maxItemCount = items.length;
             } else if (maxCategory === ItemCategory.OneHandedWeapon && fullRecipeSet.twoHandedWeapon && items.length == maxItemCount) {
                 // TODO: This is a special case that is really gross
@@ -159,7 +164,7 @@ export default class RecipeManager {
         if (maxCategory === ItemCategory.Helmet) {
             swappedItems.push(fullRecipeSet.helmet!);
             fullRecipeSet.helmet = chaosItems[maxCategory].pop();
-        } else if (maxCategory === ItemCategory.Boots) {
+        } else if (maxCategory === ItemCategory.Belt) {
             swappedItems.push(fullRecipeSet.belt!);
             fullRecipeSet.belt = chaosItems[maxCategory].pop();
         } else if (maxCategory === ItemCategory.Armor) {
