@@ -1,5 +1,5 @@
 
-import type { ItemCategory, StashItem } from "./models/index";
+import { ItemCategory, StashItem } from "./models/index";
 
 type RecipeSet = {
     helmet?: StashItem;
@@ -15,7 +15,19 @@ type RecipeSet = {
     amulet?: StashItem;
 }
 
-type GroupedStashItems = { [key: string]: StashItem[] };
+type RecipeSetKeys = keyof RecipeSet;
+
+type GroupedStashItems = {
+    [ItemCategory.Helmet]: StashItem[];
+    [ItemCategory.Belt]: StashItem[];
+    [ItemCategory.Armor]: StashItem[];
+    [ItemCategory.Gloves]: StashItem[];
+    [ItemCategory.Boots]: StashItem[]
+    [ItemCategory.OneHandedWeapon]: StashItem[]
+    [ItemCategory.TwoHandedWeapon]: StashItem[];
+    [ItemCategory.Ring]: StashItem[];
+    [ItemCategory.Amulet]: StashItem[];
+}
 export default class RecipeManager {
     items: StashItem[]
 
@@ -25,15 +37,15 @@ export default class RecipeManager {
 
     _generateItemStatistics(items: StashItem[]) {
         let initialState = {
-            HELMET: 0,
-            BELT: 0,
-            ARMOR: 0,
-            GLOVES: 0,
-            BOOTS: 0,
-            ONE_HANDED_WEAPON: 0,
-            TWO_HANDED_WEAPON: 0,
-            RING: 0,
-            AMULET: 0
+            [ItemCategory.Helmet]: 0,
+            [ItemCategory.Belt]: 0,
+            [ItemCategory.Armor]: 0,
+            [ItemCategory.Gloves]: 0,
+            [ItemCategory.Boots]: 0,
+            [ItemCategory.OneHandedWeapon]: 0,
+            [ItemCategory.TwoHandedWeapon]: 0,
+            [ItemCategory.Ring]: 0,
+            [ItemCategory.Amulet]: 0
         }
         return items
         .filter((item) => {
@@ -53,15 +65,15 @@ export default class RecipeManager {
 
         // TODO: Figure out consistent casing for this
         let regalLevelItems: GroupedStashItems = {
-            HELMET: [],
-            BELT: [],
-            ARMOR: [],
-            GLOVES: [],
-            BOOTS: [],
-            ONE_HANDED_WEAPON: [],
-            TWO_HANDED_WEAPON: [],
-            RING: [],
-            AMULET: []
+            [ItemCategory.Helmet]: [],
+            [ItemCategory.Belt]: [],
+            [ItemCategory.Armor]: [],
+            [ItemCategory.Gloves]: [],
+            [ItemCategory.Boots]: [],
+            [ItemCategory.OneHandedWeapon]: [],
+            [ItemCategory.TwoHandedWeapon]: [],
+            [ItemCategory.Ring]: [],
+            [ItemCategory.Amulet]: []
         }
         // TODO: Does this deep copy?
         let chaosLevelItems = {
@@ -99,15 +111,15 @@ export default class RecipeManager {
                 let [newRecipeSet, removedItems] = this._replaceWithChaosItem(recipeSet, chaosLevelItems)
                 if (removedItems) {
                     // Remove these items from being available in the regal list
+                    for (let removedItem of removedItems) {
+                        regalLevelItems[removedItem.category].push(removedItem);
+                    }
                 }
-                finalRecipeSet = newRecipeSet;
-
-                // TODO: Should our replace function mutate our regalRecipeItems? IDK. We will learn after implementing it
-                
+                finalRecipeSet = newRecipeSet;                
             } else {
                 finalRecipeSet = this._fillMissingWithChaosItems(recipeSet, chaosLevelItems)
             }
-            if (this._isRecipeSetComplete(finalRecipeSet)) {
+            if (finalRecipeSet && this._isRecipeSetComplete(finalRecipeSet)) {
                 chaosRecipeItems.push(finalRecipeSet);
             } else {
                 break;
@@ -127,11 +139,13 @@ export default class RecipeManager {
 
         let maxCategory: ItemCategory | undefined;
         let maxItemCount = 0
+ 
+        //TODO: Do this more typescirpt-esqe
         for (const [category, items] of Object.entries(chaosItems)) {
             if (items.length > maxItemCount) {
                 maxCategory = category;
                 maxItemCount = items.length;
-            } else if (maxCategory === 'ONE_HANDED_WEAPON' && fullRecipeSet.twoHandedWeapon && items.length == maxItemCount) {
+            } else if (maxCategory === ItemCategory.OneHandedWeapon && fullRecipeSet.twoHandedWeapon && items.length == maxItemCount) {
                 // TODO: This is a special case that is really gross
                 // Basically, we need to deprioritize using one handed weapons to swap out two handed weapons because we need two of them
                 maxCategory = category;
@@ -142,28 +156,28 @@ export default class RecipeManager {
         }
 
         let swappedItems: StashItem[] = []
-        if (maxCategory === 'HELMET') {
+        if (maxCategory === ItemCategory.Helmet) {
             swappedItems.push(fullRecipeSet.helmet!);
             fullRecipeSet.helmet = chaosItems[maxCategory].pop();
-        } else if (maxCategory === 'BELT') {
+        } else if (maxCategory === ItemCategory.Boots) {
             swappedItems.push(fullRecipeSet.belt!);
             fullRecipeSet.belt = chaosItems[maxCategory].pop();
-        } else if (maxCategory === 'ARMOR') {
+        } else if (maxCategory === ItemCategory.Armor) {
             swappedItems.push(fullRecipeSet.armor!);
             fullRecipeSet.armor = chaosItems[maxCategory].pop();
-        } else if (maxCategory === 'GLOVES') {
+        } else if (maxCategory ===ItemCategory.Gloves) {
             swappedItems.push(fullRecipeSet.gloves!);
             fullRecipeSet.gloves = chaosItems[maxCategory].pop();
-        } else if (maxCategory === 'BOOTS') {
+        } else if (maxCategory === ItemCategory.Boots) {
             swappedItems.push(fullRecipeSet.boots!);
             fullRecipeSet.boots = chaosItems[maxCategory].pop();
-        } else if (maxCategory === 'AMULET') {
+        } else if (maxCategory === ItemCategory.Amulet) {
             swappedItems.push(fullRecipeSet.amulet!);
             fullRecipeSet.amulet = chaosItems[maxCategory].pop();
-        } else if (maxCategory === 'RING') {
+        } else if (maxCategory === ItemCategory.Ring) {
             swappedItems.push(fullRecipeSet.ringA!);
             fullRecipeSet.ringA = chaosItems[maxCategory].pop();
-        } else if (maxCategory === "TWO_HANDED_WEAPON") {
+        } else if (maxCategory === ItemCategory.TwoHandedWeapon) {
             // The weapon logic is fairly convoluted because a 2H weapon can replace two 1H, and vice-versa
             if (fullRecipeSet.twoHandedWeapon) {
                 swappedItems.push(fullRecipeSet.twoHandedWeapon);
@@ -175,7 +189,7 @@ export default class RecipeManager {
                 fullRecipeSet.oneHandedWeaponB = undefined;
                 fullRecipeSet.twoHandedWeapon = chaosItems[maxCategory].pop();
             }
-        } else if (maxCategory === "ONE_HANDED_WEAPON") {
+        } else if (maxCategory === ItemCategory.OneHandedWeapon) {
             if (fullRecipeSet.oneHandedWeaponA) {
                 swappedItems.push(fullRecipeSet.oneHandedWeaponA);
                 fullRecipeSet.oneHandedWeaponA = chaosItems[maxCategory].pop();
@@ -199,29 +213,9 @@ export default class RecipeManager {
     // Append a partialrecipe with chaosItems. The resulting recipe set will potentially fail if not enough chaos items remain
     // NOTE: This will mutate the passed in chaosItems
     _fillMissingWithChaosItems(partialRecipeSet: RecipeSet, chaosItems: GroupedStashItems): RecipeSet {
-        if (!partialRecipeSet.helmet) {
-            partialRecipeSet.helmet = chaosItems.HELMET.pop();
-        }
-        if (!partialRecipeSet.belt) {
-            partialRecipeSet.belt = chaosItems.BELT.pop();
-        }
-        if (!partialRecipeSet.armor) {
-            partialRecipeSet.armor = chaosItems.ARMOR.pop();
-        }
-       if (!partialRecipeSet.gloves) {
-            partialRecipeSet.gloves = chaosItems.GLOVES.pop();
-        }
-        if (!partialRecipeSet.boots) {
-            partialRecipeSet.boots = chaosItems.BOOTS.pop();
-        }
-        if (!partialRecipeSet.ringA) {
-            partialRecipeSet.ringA = chaosItems.RING.pop();
-        }
-        if (!partialRecipeSet.ringB) {
-            partialRecipeSet.ringB = chaosItems.RING.pop();
-        }
-        if (!partialRecipeSet.amulet) {
-            partialRecipeSet.amulet = chaosItems.AMULET.pop();
+        const deterministicProperties: RecipeSetKeys[] = ["helmet", "belt", "armor", "gloves", "boots", "ringA", "ringB", "amulet"];
+        for (let deterministicProperty of deterministicProperties) {
+            partialRecipeSet[deterministicProperty] = chaosItems[this._propertyNameToItemCategory(deterministicProperty)!].pop()
         }
 
         // Weapons are always fun.
@@ -230,7 +224,7 @@ export default class RecipeManager {
             // Do nothing. We have both weapons
         } else if (!partialRecipeSet.twoHandedWeapon && !partialRecipeSet.oneHandedWeaponA && !partialRecipeSet.oneHandedWeaponB) {
             // No weapons are there
-            if (chaosItems.twoHandedWeapon.length > 0) {
+            if (chaosItems.TWO_HANDED_WEAPON.length > 0) {
                 partialRecipeSet.twoHandedWeapon = chaosItems.TWO_HANDED_WEAPON.pop();
             } else {
                 partialRecipeSet.oneHandedWeaponA = chaosItems.ONE_HANDED_WEAPON.pop()
@@ -260,6 +254,7 @@ export default class RecipeManager {
                 partialRecipeSet.twoHandedWeapon = chaosItems.TWO_HANDED_WEAPON.pop()
             }
         }
+        return partialRecipeSet;
     }
 
     // TODO: Should this do chaos or regal validation?
@@ -279,4 +274,72 @@ export default class RecipeManager {
         let weaponIsValid = hasTwoHandedWeapon || hasOneHandedWeapons;
         return requiredSimpleItems && weaponIsValid;
     }
+
+    _itemCategoryToPropertyName(itemCategory: ItemCategory): RecipeSetKeys | undefined {
+        switch (itemCategory) {
+            case ItemCategory.Helmet : {
+                return "helmet"
+            }
+            case ItemCategory.Boots: {
+                return "belt"
+            }
+            case ItemCategory.Armor: {
+                return "armor"
+            }
+            case ItemCategory.Gloves: {
+                return "gloves"
+            }
+            case ItemCategory.Boots: {
+                return "boots"
+            }
+            case ItemCategory.Amulet: {
+                return "amulet"
+            }
+            case ItemCategory.TwoHandedWeapon: {
+                return "twoHandedWeapon"
+            }
+
+            // Ring and one handed weapon is not supportable
+            return;
+        }
+    }
+
+    _propertyNameToItemCategory(propertyName: RecipeSetKeys) {
+        switch (propertyName) {
+            case "helmet": {
+                return ItemCategory.Helmet
+            }
+            case "belt": {
+                return ItemCategory.Belt
+            }
+            case "gloves": {
+                return ItemCategory.Gloves
+            }
+            case "boots": {
+                return ItemCategory.Boots
+            }
+            case "oneHandedWeaponA": {
+                return ItemCategory.OneHandedWeapon
+            }
+            case "oneHandedWeaponB": {
+                return ItemCategory.OneHandedWeapon
+            }
+            case "twoHandedWeapon": {
+                return ItemCategory.TwoHandedWeapon
+            }
+            case "ringA": {
+                return ItemCategory.Ring
+            }
+            case "ringB": {
+                return ItemCategory.Ring
+            }
+            case "amulet": {
+                return ItemCategory.Amulet
+            }
+        }
+    }
 }
+
+function prop<T, K extends keyof T>(obj: T, key: K) {
+    return obj[key];
+  }
