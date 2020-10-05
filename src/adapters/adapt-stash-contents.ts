@@ -39,7 +39,7 @@ const REGEX_TO_CATEGORY = new Map([
     [AMULET_REGEX, ItemCategory.Amulet],
     [GLOVE_REGEX, ItemCategory.Gloves],
     [BOOTS_REGEX, ItemCategory.Boots],
-    [CHEST_REGEX, ItemCategory.Amulet],
+    [CHEST_REGEX, ItemCategory.Armor],
     [HAT_REGEX, ItemCategory.Helmet],
     [RING_REGEX, ItemCategory.Ring],
     // [JEWEL_REGEX, ItemCategory.Jewel],
