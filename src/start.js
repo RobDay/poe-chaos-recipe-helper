@@ -5,7 +5,6 @@ const path = require('path')
 const url = require('url')
 
 let mainWindow;
-let window2;
 
 
 
@@ -14,9 +13,10 @@ function createWindow() {
   const cookie = { url: 'https://www.pathofexile.com', name: 'POESESSID', value: '***REMOVED***' }
 session.defaultSession.cookies.set(cookie)
   mainWindow = new BrowserWindow({
-    width: 800,
+    width: 468,
     height: 600,
-    // transparent: true,
+    transparent: true,
+    frame: false,
     // alwaysOnTop: true,
     webPreferences: {
       nodeIntegration: true,
@@ -24,19 +24,6 @@ session.defaultSession.cookies.set(cookie)
     },
   })
 
-  // window2 = new BrowserWindow({
-  //   width: 800,
-  //   height: 600,
-  //   x: 100,
-  //   y: 100,
-  //   // transparent: true,
-  //   // alwaysOnTop: true,
-  //   webPreferences: {
-  //     nodeIntegration: true,
-  //     webSecurity: false
-  //   },
-  // })
-  // mainWindow.setIgnoreMouseEvents(true);
 
   mainWindow.loadURL(
     process.env.ELECTRON_START_URL ||
@@ -47,15 +34,6 @@ session.defaultSession.cookies.set(cookie)
         
       })
   )
-
-  // window2.loadURL(
-  //   process.env.ELECTRON_START_URL ||
-  //     url.format({
-  //       pathname: path.join(__dirname, '/../public/index.html'),
-  //       protocol: 'file:',
-  //       slashes: true,
-  //     })
-  // )
 
   mainWindow.on('closed', () => {
     mainWindow = null

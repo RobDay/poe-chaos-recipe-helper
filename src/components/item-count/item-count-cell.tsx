@@ -5,22 +5,34 @@ type PropsType = {
     itemName: String;
     itemCount: number;
     color: string;
+    style?: any;
 }
 
 const Box = styled("div", (props: PropsType) => {
     return {
-        color: props.color,
-        border: "solid 1px gray"
+        backgroundColor: props.color,
+        border: "solid 1px gray",
+        textAlign: "center"
     }
 });
+
+const H5 = styled('h5', {
+    lineHeight: 0,
+    marginBlockStart: "1em",
+    marginBlockEnd:" 1em"
+})
+
+const P = styled('p', {
+    lineHeight: 0
+})
 
 
 export default function ItemCountCell(props: PropsType) {
 
     return (
-        <Box>
-            <h2>{props.itemName}</h2>
-            <p>{props.itemCount}</p>
+        <Box {...props}>
+            <H5>{props.itemName}</H5>
+            <P>{props.itemCount}</P>
         </Box>
     )
 }
