@@ -14,22 +14,23 @@ const SPLINTER_REGEX = / Splinter$/
 // TODO: There are so many more, but we just need the equipable inventory items
 
 const TWO_HANDED_REGEX = new RegExp(''
-    + / Bow$/.source //Bows
-    + / Branch$| Staff$|Quarterstaff$|Lathi$/.source //Staves
-    + /Woodsplitter|Poleaxe| Chopper|Labrys/.source //Axes
-    + / Maul$|Mallet|Sledgehammer| Star$|Steelhead|Piledriver|Meatgrinder/.source // Maces
-    + /Longsword$| Greatsword$/.source //Swords
+    + /|Bow$/.source //Bows
+    + /| Branch$| Staff$|Quarterstaff$|Lathi$/.source //Staves
+    + /|Woodsplitter|Poleaxe| Chopper|Labrys/.source //Axes
+    + /| Maul$|Mallet|Sledgehammer| Star$|Steelhead|Piledriver|Meatgrinder/.source // Maces
+    + /|Longsword$| Greatsword$/.source //Swords
 )
 
 const WEAPON_REGEX = new RegExp(''
-    + / Fist$| Claw$| Paw$|Blinder$|Gouger$| Ripper$| Stabber$| Awl$/.source // claws
-    + /Shank$| Knife$| Stiletto$| Dagger$| Poignard$| Trisula$| Ambusher$| Sai$| Kris$|Skean$| Blade$/.source //Daggers
-    + / Hatchet$| Axe$| Cleaver$|Tomahawk$| Splitter$/.source //Axes
-    + / Club$| Hammer$| Mace$| Breaker$|Tenderizer$|Gavel$|Pernach$/.source //Maces
-    + / Sceptre$| Fetish$| Sekhem$/.source //Sceptres
-    + / Sword$|Sabre$| Blade$|Cutlass$|Baselard$|Grappler$|Gladius$|Hook$/.source //Swords
-    + / Spike$| Rapier$| Foil$|Smallsword$|Estoc$|Pecoraro$/.source //Thursting one handed swords
-    + /Wand$| Horn$/.source //Wands
+    + /Fist$| Claw$| Paw$|Blinder$|Gouger$| Ripper$| Stabber$| Awl$|Fleshripper$/.source // claws
+    + /|Shank$| Knife$| Stiletto$| Dagger$| Poignard$| Trisula$| Ambusher$| Sai$| Kris$|Skean$| Blade$/.source //Daggers
+    + /| Hatchet$| Axe$| Cleaver$|Tomahawk$| Splitter$/.source //Axes
+    + /| Club$| Hammer$| Mace$| Breaker$|Tenderizer$|Gavel$|Pernach$/.source //Maces
+    + /| Sceptre$| Fetish$| Sekhem$/.source //Sceptres
+    + /| Sword$|Sabre$| Blade$|Cutlass$|Baselard$|Grappler$|Gladius$|Hook$/.source //Swords
+    + /| Spike$| Rapier$| Foil$|Smallsword$|Estoc$|Pecoraro$/.source //Thursting one handed swords
+    + /|Wand$| Horn$/.source //Wands
+    + /| Shield$/.source // Shields
     + TWO_HANDED_REGEX.source
 )
 
@@ -78,7 +79,8 @@ function typelineToItemCategory(typeLine: string, width: number, height: number)
     }
 
     // If we didn't hit the deterministic case, it's probably a weapon
-    if (WEAPON_REGEX.test(typeLine)) {
+    if (WEAPON_REGEX.test(typeLine) === true) {
+        console.log(`${typeLine} is a one handed weapon`)
         if (width === 1) {
             return ItemCategory.OneHandedWeapon
         } else {
