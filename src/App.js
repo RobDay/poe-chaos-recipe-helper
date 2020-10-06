@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import ItemCount from './components/item-count/item-count-list'
+import ItemCountList from './components/item-count/item-count-list'
 import {ItemCategory} from './models/index'
 
 import getStashContent from './client/get-stash-content'
@@ -21,23 +21,12 @@ function App() {
     [ItemCategory.Ring]: 1,
     [ItemCategory.Amulet]: 6
 }
+const styles = {
+  WebkitAppRegion: "drag"
+}
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-      <ItemCount itemCounts={itemCounts}/>
+    <div className="Appd" style={styles}>
+      <ItemCountList itemCounts={itemCounts}/>
     </div>
   );
 }

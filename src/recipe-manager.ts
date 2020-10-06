@@ -1,4 +1,3 @@
-
 import { ItemCategory, StashItem, ItemCategoryKeys} from "./models/index";
 
 type RecipeSet = {
@@ -13,6 +12,18 @@ type RecipeSet = {
     ringA?: StashItem;
     ringB?: StashItem;
     amulet?: StashItem;
+}
+
+export type StashItemCounts = {
+    [ItemCategory.Helmet]: number;
+    [ItemCategory.Belt]: number;
+    [ItemCategory.Armor]: number;
+    [ItemCategory.Gloves]: number;
+    [ItemCategory.Boots]: number;
+    [ItemCategory.OneHandedWeapon]: number;
+    [ItemCategory.TwoHandedWeapon]: number;
+    [ItemCategory.Ring]: number;
+    [ItemCategory.Amulet]: number;
 }
 
 type RecipeSetKeys = keyof RecipeSet;
@@ -33,11 +44,13 @@ export default class RecipeManager {
     items: StashItem[]
 
     constructor(items: StashItem[]) {
+        console.log('items here are')
+        console.log(items);
         this.items = items;
     }
 
     _generateItemStatistics(items: StashItem[]) {
-        let initialState: { [key: string]: number; } = {
+        let initialState: StashItemCounts = {
             [ItemCategory.Helmet]: 0,
             [ItemCategory.Belt]: 0,
             [ItemCategory.Armor]: 0,
@@ -48,17 +61,21 @@ export default class RecipeManager {
             [ItemCategory.Ring]: 0,
             [ItemCategory.Amulet]: 0
         }
-        return items
+        const result =  items
         .filter((item) => {
             return item.ilvl >= 60
         }).reduce((result, item) => {
-
+            if (item.category == ItemCategory.Unknown) { return result }
             result[item.category]+=1
             return result;
         }, initialState);
+        console.log('returning stats')
+        console.log(result);
+        return result;
     }
 
     generateItemStatistics() {
+        console.log('generating stats')
         return this._generateItemStatistics(this.items);
     }
 
@@ -84,7 +101,6 @@ export default class RecipeManager {
         }
         for (let item of this.items) {
             if (item.ilvl > 74) {
-                item.category
                 regalLevelItems[item.category].push(item);
             } else {
                 chaosLevelItems[item.category].push(item);
@@ -344,7 +360,3 @@ export default class RecipeManager {
         }
     }
 }
-
-function prop<T, K extends keyof T>(obj: T, key: K) {
-    return obj[key];
-  }

@@ -1,11 +1,13 @@
 // @flow
 import authedFetch from "./authed-fetch";
-
+import {getValidResponse} from '../__tests__/mocks/gets-stashes-response'
 
 export default async function getStashContent(
   username: string,
   stashIndex: number
-): Promise<JSON> {
+): Promise<any> {
+  // console.log('Called the underlying function');
+  // return getValidResponse();
   const url = "https://www.pathofexile.com/character-window/get-stash-items?league=Heist&tabs=0&tabIndex=3&accountName=yousillygoose";
   console.log(`Fetching ${url}`);
 
