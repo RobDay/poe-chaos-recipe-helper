@@ -45,7 +45,7 @@ function createMainWindow() {
   session.defaultSession.cookies.set(cookie);
   mainWindow = new BrowserWindow({
     width: 468,
-    height: 600,
+    height: 40,
     transparent: true,
     frame: false,
     // alwaysOnTop: true,

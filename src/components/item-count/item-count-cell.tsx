@@ -19,7 +19,8 @@ const Box = styled("div", (props: PropsType) => {
 const H5 = styled('h5', {
     lineHeight: 0,
     marginBlockStart: "1em",
-    marginBlockEnd:" 1em"
+    marginBlockEnd:" 1em",
+    filter: "grayscale(70%)"
 })
 
 const P = styled('p', {
