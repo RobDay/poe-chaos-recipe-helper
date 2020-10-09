@@ -40,6 +40,7 @@ export type StashItem = {
     width: number;
     height: number;
     identified: boolean;
+    id: string;
 }
 
 export type StashAPIContentItem = {
@@ -53,6 +54,7 @@ export type StashAPIContentItem = {
     inventoryId: string;
     ilvl: number;
     identified: boolean;
+    id: string;
 }
 
 export type StashAPIResponse = {
