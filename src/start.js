@@ -4,6 +4,7 @@ app.commandLine.appendSwitch("disable-features", "OutOfBlinkCors");
 const path = require("path");
 const url = require("url");
 
+const mainWindowDefault = false;
 let mainWindow;
 let overlayWindow;
 
@@ -69,7 +70,7 @@ function createMainWindow() {
   });
 }
 
-app.whenReady().then(createMainWindow);
+app.whenReady().then(mainWindowDefault ? createMainWindow : createOverlay);
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {

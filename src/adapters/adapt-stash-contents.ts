@@ -60,7 +60,8 @@ export default function adaptStashAPIResponse(response: StashAPIResponse): Stash
             name: `${responseItem.name} ${responseItem.typeLine}`,
             category: typelineToItemCategory(responseItem.typeLine, responseItem.w, responseItem.h),
             type: frameTypeToItemType(responseItem.frameType),
-            identified: responseItem.identified
+            identified: responseItem.identified,
+            id: responseItem.id
         }
     }).filter((item) => {
         return item.category !== ItemCategory.Unknown
