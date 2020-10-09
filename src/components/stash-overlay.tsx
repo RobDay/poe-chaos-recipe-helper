@@ -2,6 +2,7 @@ import React from "react";
 import { styled } from "styletron-react";
 import StashItemOverlay from "./stash-item-overlay";
 import { ItemCategory, ItemType, StashItem } from "../models/index";
+import withElectronClick from "./hoc/with-electron-ipc-comms";
 
 //TODO: Filter in the recipe generator for rate
 const getTempStashItem = (id: string, x: number, y: number): StashItem => {
@@ -41,11 +42,16 @@ enum StashWidth {
 
 type PropsType = {
   // stashItems: StashItem[];
+  onStashOverlayClicked: () => void;
   // density: StashWidth.Quad;
 };
 
+// TODO: move IPC Calls injected here
 function StashOverlay(props: PropsType) {
-  const onOverlayItemClick = (stashItem: StashItem) => {};
+  const onOverlayItemClick = (stashItem: StashItem) => {
+    //TODO: move to const
+    props.onStashOverlayClicked();
+  };
 
   const getSizeInPixels = (size: number) => {
     // Check quad
@@ -63,6 +69,7 @@ function StashOverlay(props: PropsType) {
           top={getSizeInPixels(item.y)}
           color="orange"
           onStashItemClicked={onOverlayItemClick}
+          item={item}
         />
       );
     });
@@ -72,4 +79,4 @@ function StashOverlay(props: PropsType) {
   return <Container>{renderStashItems()}</Container>;
 }
 
-export default StashOverlay;
+export default withElectronClick(StashOverlay, "onStashOverlayClicked");
