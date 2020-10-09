@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { styled } from "styletron-react";
 import StashItemOverlay from "./stash-item-overlay";
 import { ItemCategory, ItemType, StashItem } from "../models/index";
@@ -30,7 +30,7 @@ const stashItems = [
 ];
 
 const Container = styled("div", {
-  backgroundColor: "red",
+  backgroundColor: "pink",
   position: "relative",
 });
 
@@ -48,9 +48,15 @@ type PropsType = {
 
 // TODO: move IPC Calls injected here
 function StashOverlay(props: PropsType) {
+  const [clickedOverlayItems, setClickedOverlayItems] = useState(
+    new Set<StashItem>()
+  );
   const onOverlayItemClick = (stashItem: StashItem) => {
     //TODO: move to const
+    console.log("setting clicked here");
     props.onStashOverlayClicked();
+    clickedOverlayItems.add(stashItem);
+    setClickedOverlayItems(new Set(clickedOverlayItems));
   };
 
   const getSizeInPixels = (size: number) => {
@@ -60,19 +66,25 @@ function StashOverlay(props: PropsType) {
   };
 
   const renderStashItems = () => {
-    const itemOverlays = stashItems.map((item) => {
-      return (
-        <StashItemOverlay
-          width={getSizeInPixels(item.width)}
-          height={getSizeInPixels(item.height)}
-          left={getSizeInPixels(item.x)}
-          top={getSizeInPixels(item.y)}
-          color="orange"
-          onStashItemClicked={onOverlayItemClick}
-          item={item}
-        />
-      );
-    });
+    console.log("it contains");
+    console.log(clickedOverlayItems);
+    const itemOverlays = stashItems
+      .filter((item) => {
+        return !clickedOverlayItems.has(item);
+      })
+      .map((item) => {
+        return (
+          <StashItemOverlay
+            width={getSizeInPixels(item.width)}
+            height={getSizeInPixels(item.height)}
+            left={getSizeInPixels(item.x)}
+            top={getSizeInPixels(item.y)}
+            color="orange"
+            onStashItemClicked={onOverlayItemClick}
+            item={item}
+          />
+        );
+      });
     return itemOverlays;
   };
 
