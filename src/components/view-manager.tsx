@@ -27,7 +27,7 @@ class ViewManager extends Component {
   render() {
     return (
       <Router>
-        <div>
+        <div style={{ backgroundColor: "transparent" }}>
           <Route path="/" component={ViewManager.View} />
         </div>
       </Router>

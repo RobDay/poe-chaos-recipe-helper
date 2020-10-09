@@ -22,6 +22,8 @@ function createOverlay() {
     transparent: true,
     frame: false,
     // alwaysOnTop: true,
+    // backgroundColor: "blue",
+    focusable: false,
     webPreferences: {
       nodeIntegration: true,
       webSecurity: false,

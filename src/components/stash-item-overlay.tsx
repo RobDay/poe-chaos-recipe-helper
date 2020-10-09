@@ -34,7 +34,7 @@ export default function StashItemOverlay(props: PropsType) {
       onPointerDown={() => console.log("on pointer down")}
       onTouchStart={() => console.log("on touch start")}
       onBeforeInput={() => console.log("before-input called")}
-      //   on
+      // on
       onMouseDown={() => console.log("mouse down")}
       onMouseDownCapture={() => console.log("on mouse down capture")}
       onMouseUp={() => console.log("on mouse up")}
