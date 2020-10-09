@@ -1,6 +1,7 @@
 const net = require('net')
-const childProcess = require('child_process')
+const spawn = require('child_process').spawn
 
+console.log('in start react');
 const port = process.env.PORT ? process.env.PORT - 100 : 3000
 
 process.env.ELECTRON_MAIN_START_URL = `http://localhost:${port}/?mainWindow`
@@ -15,8 +16,21 @@ const tryConnection = () => {
     if (!startedElectron) {
       console.log('starting electron')
       startedElectron = true
-      const exec = childProcess.exec
-      exec('npm run electron')
+      // const exec = childProcess.exec
+      // spawn('ls', ['-lh', '/usr'])
+      // const spawned = spawn('npm run electron')
+      const spawned = spawn('npm', ['run', 'electron'])
+      spawned.stdout.on('data', function (data) {
+        console.log('stdout: ' + data.toString());
+      });
+      
+      spawned.stderr.on('data', function (data) {
+        console.log('stderr: ' + data.toString());
+      });
+      
+      spawned.on('exit', function (code) {
+        console.log('child process exited with code ' + code.toString());
+      });
     }
   })
 }

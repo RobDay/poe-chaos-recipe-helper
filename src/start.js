@@ -1,6 +1,12 @@
 const { app, BrowserWindow, session } = require("electron");
+const { ipcMain } = require('electron')
+const robot = require("robotjs");
+
+
+
 app.commandLine.appendSwitch("disable-features", "OutOfBlinkCors");
 
+console.log("BACKEND LOG")
 const path = require("path");
 const url = require("url");
 
@@ -9,10 +15,13 @@ let mainWindow;
 let overlayWindow;
 
 function createOverlay() {
+
+  console.log('Creating overlays')
+  process.stdout.write('your output to command prompt console or node js ')
   overlayWindow = new BrowserWindow({
     width: 1134,
     height: 1130,
-    x: 7,
+    x: 199,
     y: 200,
     transparent: true,
     frame: false,
@@ -21,7 +30,23 @@ function createOverlay() {
       nodeIntegration: true,
       webSecurity: false,
     },
+    // acceptFirstMouse: true
   });
+
+  console.log('here');
+  ipcMain.on('synchronous-message', (event, arg) => {
+
+    event.returnValue = 'pong'
+    // transparentOverlay.webContents.sendInputEvent({type:'mouseDown', x:arg.x, y: arg.y, button:'left', clickCount: 1});
+    //   transparentOverlay.webContents.sendInputEvent({type:'mouseUp', x:arg.x, y: arg.y, button:'left', clickCount: 1});
+    overlayWindow.setIgnoreMouseEvents(true, {forward: true});
+    console.log('mouse pos')
+    console.log(robot.getMousePos());
+    // TODO: Need to get osx permissions popup
+    robot.mouseClick();
+    overlayWindow.setIgnoreMouseEvents(false);
+    // overlayWindow.webContents.send('hi');
+  })
 
   overlayWindow.loadURL(
     process.env.ELECTRON_OVERLAY_START_URL ||
@@ -35,6 +60,7 @@ function createOverlay() {
   overlayWindow.on("closed", () => {
     overlayWindow = null;
   });
+  
 }
 
 function createMainWindow() {
