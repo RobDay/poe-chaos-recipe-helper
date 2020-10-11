@@ -15,11 +15,11 @@ function createOverlay() {
   console.log("Creating overlays");
   process.stdout.write("your output to command prompt console or node js ");
   overlayWindow = new BrowserWindow({
-    width: 1134,
-    height: 1130,
-    x: 199,
-    y: 200,
-    transparent: true,
+    width: 560,
+    height: 560,
+    x: 20,
+    y: 180,
+    // transparent: true,
     frame: false,
     // alwaysOnTop: true,
     // backgroundColor: "blue",
@@ -57,12 +57,6 @@ function createOverlay() {
 }
 
 function createMainWindow() {
-  const cookie = {
-    url: "https://www.pathofexile.com",
-    name: "POESESSID",
-    value: "f7e89fad89933d67520f220634832cc5",
-  };
-  session.defaultSession.cookies.set(cookie);
   mainWindow = new BrowserWindow({
     width: 468,
     height: 40,
@@ -89,7 +83,15 @@ function createMainWindow() {
   });
 }
 
-app.whenReady().then(mainWindowDefault ? createMainWindow : createOverlay);
+app.whenReady().then(() => {
+  const cookie = {
+    url: "https://www.pathofexile.com",
+    name: "POESESSID",
+    value: "f7e89fad89933d67520f220634832cc5",
+  };
+  session.defaultSession.cookies.set(cookie);
+  mainWindowDefault ? createMainWindow() : createOverlay();
+});
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
