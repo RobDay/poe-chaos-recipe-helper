@@ -28,19 +28,5 @@ export default function StashItemOverlay(props: PropsType) {
   const onClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     props.onStashItemClicked(props.item);
   };
-  return (
-    <Container
-      {...props}
-      onPointerDown={() => console.log("on pointer down")}
-      onTouchStart={() => console.log("on touch start")}
-      onBeforeInput={() => console.log("before-input called")}
-      // on
-      onMouseDown={() => console.log("mouse down")}
-      onMouseDownCapture={() => console.log("on mouse down capture")}
-      onMouseUp={() => console.log("on mouse up")}
-      onClick={onClick}
-      onMouseOver={() => console.log("on mouse over")}
-      onMouseEnter={() => console.log("enter")}
-    ></Container>
-  );
+  return <Container {...props} onClick={onClick}></Container>;
 }

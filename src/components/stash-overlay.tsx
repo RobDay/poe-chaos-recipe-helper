@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { styled } from "styletron-react";
 import StashItemOverlay from "./stash-item-overlay";
 import { ItemCategory, ItemType, StashItem } from "../models/index";
 import withElectronClick from "./hoc/with-electron-ipc-comms";
+import getStashContent from "../client/get-stash-content";
+import RecipeManager, { RecipeSet } from "../recipe-manager";
 
 //TODO: Filter in the recipe generator for rate
 const getTempStashItem = (id: string, x: number, y: number): StashItem => {
@@ -34,7 +36,9 @@ const Container = styled("div", {
   position: "relative",
 });
 
-const INVENTORY_WIDTH = 1134;
+const X_OFFSET = 20;
+const Y_OFFSET = 180;
+const INVENTORY_WIDTH = 560;
 enum StashWidth {
   Normal = 12,
   Quad = 24,
@@ -51,6 +55,23 @@ function StashOverlay(props: PropsType) {
   const [clickedOverlayItems, setClickedOverlayItems] = useState(
     new Set<StashItem>()
   );
+
+  const [recipeSets, setRecipeSets] = useState(new Array<RecipeSet>());
+
+  const getChaosRecipes = async () => {
+    const stashItems = await getStashContent("", 5);
+
+    const recipeManager = new RecipeManager(stashItems);
+    const chaosRecipes = recipeManager.getChaosRecipes();
+    console.log("Found chaos recipes");
+    console.log(JSON.stringify(chaosRecipes, null, 2));
+    setRecipeSets([...chaosRecipes]);
+  };
+
+  useEffect(() => {
+    getChaosRecipes();
+  }, []);
+
   const onOverlayItemClick = (stashItem: StashItem) => {
     //TODO: move to const
     console.log("setting clicked here");
@@ -59,33 +80,77 @@ function StashOverlay(props: PropsType) {
     setClickedOverlayItems(new Set(clickedOverlayItems));
   };
 
-  const getSizeInPixels = (size: number) => {
+  // const getSizeInPixels = (size: number) => {
+  //   // Check quad
+  //   const cellCount: number = StashWidth.Quad;
+  //   return `${(size * INVENTORY_WIDTH) / cellCount}px`;
+  // };
+
+  const getSizeInPixels = (
+    size: number,
+    coordinate?: "X" | "Y" | undefined
+  ) => {
     // Check quad
     const cellCount: number = StashWidth.Quad;
-    return `${(size * INVENTORY_WIDTH) / cellCount}px`;
+    let cellSize = (size * INVENTORY_WIDTH) / cellCount;
+    if (coordinate === "X") {
+      // cellSize += X_OFFSET;
+    } else if (coordinate === "Y") {
+      // cellSize += Y_OFFSET;
+    }
+    console.log("returning size");
+    console.log(cellSize);
+    console.log("For size: " + size);
+    return `${cellSize}px`;
   };
 
   const renderStashItems = () => {
-    console.log("it contains");
-    console.log(clickedOverlayItems);
-    const itemOverlays = stashItems
-      .filter((item) => {
-        return !clickedOverlayItems.has(item);
-      })
-      .map((item) => {
-        return (
-          <StashItemOverlay
-            width={getSizeInPixels(item.width)}
-            height={getSizeInPixels(item.height)}
-            left={getSizeInPixels(item.x)}
-            top={getSizeInPixels(item.y)}
-            color="orange"
-            onStashItemClicked={onOverlayItemClick}
-            item={item}
-          />
-        );
-      });
-    return itemOverlays;
+    const x = recipeSets.pop();
+    const firstTwoSets = recipeSets.slice(0, 2).flat();
+
+    const itemOverlays = firstTwoSets.map((recipeSet) => {
+      let items = [
+        recipeSet.amulet,
+        recipeSet.armor,
+        recipeSet.belt,
+        recipeSet.boots,
+        recipeSet.gloves,
+        recipeSet.helmet,
+        recipeSet.ringA,
+        recipeSet.ringB,
+      ];
+      if (recipeSet.twoHandedWeapon) {
+        items.push(recipeSet.twoHandedWeapon);
+      } else {
+        items.push(recipeSet.oneHandedWeaponA);
+        items.push(recipeSet.oneHandedWeaponB);
+      }
+      return stashItems
+        .filter((item) => {
+          return !!item && !clickedOverlayItems.has(item);
+        })
+        .map((item) => {
+          if (!item) {
+            return null;
+          }
+          const x = getSizeInPixels(item.x);
+          const y = getSizeInPixels(item.y);
+          console.log(`x: ${x}; y: ${y}`);
+          return (
+            <StashItemOverlay
+              width={getSizeInPixels(item.width)}
+              height={getSizeInPixels(item.height)}
+              left={getSizeInPixels(item.x, "X")}
+              top={getSizeInPixels(item.y, "Y")}
+              color="orange"
+              onStashItemClicked={onOverlayItemClick}
+              item={item}
+            />
+          );
+        });
+    });
+    console.log("rendering: " + itemOverlays.flat().length);
+    return itemOverlays.flat();
   };
 
   return <Container>{renderStashItems()}</Container>;
