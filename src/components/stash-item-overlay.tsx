@@ -9,6 +9,8 @@ export type PropsType = {
   top: string;
   left: string;
   onStashItemClicked: (stashItem: StashItem) => void;
+  onStashItemOverlayMouseEnter: (stashItem: StashItem) => void;
+  onStashItemOverlayMouseExit: (stashItem: StashItem) => void;
   item: StashItem;
 };
 
@@ -28,5 +30,21 @@ export default function StashItemOverlay(props: PropsType) {
   const onClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     props.onStashItemClicked(props.item);
   };
-  return <Container {...props} onClick={onClick}></Container>;
+  const onMouseEnter = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    console.log("mouse enter");
+    props.onStashItemOverlayMouseEnter(props.item);
+  };
+  const onMouseExit = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    console.log("mouse exit");
+    props.onStashItemOverlayMouseExit(props.item);
+  };
+  return (
+    <Container
+      {...props}
+      onClick={onClick}
+      // onMouseOut={() => console.log("mouse out")}
+      onMouseEnter={onMouseEnter}
+      onMouseOut={onMouseExit}
+    ></Container>
+  );
 }

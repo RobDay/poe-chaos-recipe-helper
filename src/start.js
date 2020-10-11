@@ -6,6 +6,8 @@ app.commandLine.appendSwitch("disable-features", "OutOfBlinkCors");
 
 const path = require("path");
 const url = require("url");
+// TODO: Figure out how to share constnats with react layer
+const MANAGE_INTERACTION_KEY = "set-ignore-mouse-events";
 
 const mainWindowDefault = false;
 let mainWindow;
@@ -23,7 +25,7 @@ function createOverlay() {
     frame: false,
     alwaysOnTop: true,
     // backgroundColor: "blue",
-    focusable: false,
+    focusable: true,
     webPreferences: {
       nodeIntegration: true,
       webSecurity: false,
@@ -32,15 +34,7 @@ function createOverlay() {
   });
 
   console.log("here");
-  ipcMain.on("handle-clicked-stash-overlay-item", (event, arg) => {
-    event.returnValue = "pong";
-    overlayWindow.setIgnoreMouseEvents(true, { forward: true });
-    console.log("mouse pos");
-    console.log(robot.getMousePos());
-    // TODO: Need to get osx permissions popup
-    robot.mouseClick();
-    overlayWindow.setIgnoreMouseEvents(false);
-  });
+  registerIPCListeners();
 
   overlayWindow.loadURL(
     process.env.ELECTRON_OVERLAY_START_URL ||
@@ -104,3 +98,24 @@ app.on("activate", () => {
     createMainWindow();
   }
 });
+
+function registerIPCListeners() {
+  ipcMain.on("handle-clicked-stash-overlay-item", (event, arg) => {
+    event.returnValue = "pong";
+    overlayWindow.setIgnoreMouseEvents(true, { forward: true });
+    console.log("mouse pos");
+    console.log(robot.getMousePos());
+    // TODO: Need to get osx permissions popup
+    robot.mouseClick();
+    overlayWindow.setIgnoreMouseEvents(false);
+  });
+
+  ipcMain.on(MANAGE_INTERACTION_KEY, (event, arg) => {
+    console.log("Setting ignore to" + arg);
+    if (arg) {
+      overlayWindow.setIgnoreMouseEvents(true, { forward: true });
+    } else {
+      overlayWindow.setIgnoreMouseEvents(false);
+    }
+  });
+}
