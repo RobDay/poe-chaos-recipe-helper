@@ -19,9 +19,9 @@ function createOverlay() {
     height: 560,
     x: 20,
     y: 180,
-    // transparent: true,
+    transparent: true,
     frame: false,
-    // alwaysOnTop: true,
+    alwaysOnTop: true,
     // backgroundColor: "blue",
     focusable: false,
     webPreferences: {

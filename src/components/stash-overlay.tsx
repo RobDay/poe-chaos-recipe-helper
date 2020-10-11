@@ -98,15 +98,13 @@ function StashOverlay(props: PropsType) {
     } else if (coordinate === "Y") {
       // cellSize += Y_OFFSET;
     }
-    console.log("returning size");
-    console.log(cellSize);
-    console.log("For size: " + size);
     return `${cellSize}px`;
   };
 
   const renderStashItems = () => {
-    const x = recipeSets.pop();
+    console.log("top of render");
     const firstTwoSets = recipeSets.slice(0, 2).flat();
+    console.log(firstTwoSets);
 
     const itemOverlays = firstTwoSets.map((recipeSet) => {
       let items = [
@@ -125,7 +123,8 @@ function StashOverlay(props: PropsType) {
         items.push(recipeSet.oneHandedWeaponA);
         items.push(recipeSet.oneHandedWeaponB);
       }
-      return stashItems
+      console.log(`starting with ${stashItems.length}`);
+      return items
         .filter((item) => {
           return !!item && !clickedOverlayItems.has(item);
         })
