@@ -5,6 +5,7 @@ import { ItemCategory, ItemType, StashItem } from "../models/index";
 import withElectronClick from "./hoc/with-electron-ipc-comms";
 import getStashContent from "../client/get-stash-content";
 import RecipeManager, { RecipeSet } from "../recipe-manager";
+import useManageInteractable from "./hooks/use-manage-interactable";
 
 //TODO: Filter in the recipe generator for rate
 const getTempStashItem = (id: string, x: number, y: number): StashItem => {
@@ -36,8 +37,6 @@ const Container = styled("div", {
   position: "relative",
 });
 
-const X_OFFSET = 20;
-const Y_OFFSET = 180;
 const INVENTORY_WIDTH = 560;
 enum StashWidth {
   Normal = 12,
@@ -55,6 +54,7 @@ function StashOverlay(props: PropsType) {
   const [clickedOverlayItems, setClickedOverlayItems] = useState(
     new Set<StashItem>()
   );
+  const { enableInteractable, disableInteractable } = useManageInteractable();
 
   const [recipeSets, setRecipeSets] = useState(new Array<RecipeSet>());
 
@@ -73,11 +73,21 @@ function StashOverlay(props: PropsType) {
   }, []);
 
   const onOverlayItemClick = (stashItem: StashItem) => {
-    //TODO: move to const
-    console.log("setting clicked here");
     props.onStashOverlayClicked();
     clickedOverlayItems.add(stashItem);
     setClickedOverlayItems(new Set(clickedOverlayItems));
+  };
+
+  const onStashItemOverlayMouseEnter = (stashItem: StashItem) => {
+    if (clickedOverlayItems.has(stashItem)) {
+      console.log("baililng early because already clicked");
+      return;
+    }
+    enableInteractable();
+  };
+
+  const onStashItemOverlayMouseExit = (stashItem: StashItem) => {
+    disableInteractable();
   };
 
   // const getSizeInPixels = (size: number) => {
@@ -86,18 +96,10 @@ function StashOverlay(props: PropsType) {
   //   return `${(size * INVENTORY_WIDTH) / cellCount}px`;
   // };
 
-  const getSizeInPixels = (
-    size: number,
-    coordinate?: "X" | "Y" | undefined
-  ) => {
+  const getSizeInPixels = (size: number) => {
     // Check quad
     const cellCount: number = StashWidth.Quad;
     let cellSize = (size * INVENTORY_WIDTH) / cellCount;
-    if (coordinate === "X") {
-      // cellSize += X_OFFSET;
-    } else if (coordinate === "Y") {
-      // cellSize += Y_OFFSET;
-    }
     return `${cellSize}px`;
   };
 
@@ -139,10 +141,12 @@ function StashOverlay(props: PropsType) {
             <StashItemOverlay
               width={getSizeInPixels(item.width)}
               height={getSizeInPixels(item.height)}
-              left={getSizeInPixels(item.x, "X")}
-              top={getSizeInPixels(item.y, "Y")}
+              left={getSizeInPixels(item.x)}
+              top={getSizeInPixels(item.y)}
               color="orange"
               onStashItemClicked={onOverlayItemClick}
+              onStashItemOverlayMouseEnter={onStashItemOverlayMouseEnter}
+              onStashItemOverlayMouseExit={onStashItemOverlayMouseExit}
               item={item}
             />
           );
