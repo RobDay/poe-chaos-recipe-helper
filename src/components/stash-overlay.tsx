@@ -105,10 +105,12 @@ function StashOverlay(props: PropsType) {
 
   const renderStashItems = () => {
     console.log("top of render");
-    const firstTwoSets = recipeSets.slice(0, 2).flat();
+    const firstTwoSets = recipeSets.slice(0, 1).flat();
     console.log(firstTwoSets);
 
     const itemOverlays = firstTwoSets.map((recipeSet) => {
+      console.log("The chosen recipe set is");
+      console.log(JSON.stringify(recipeSet, null, 2));
       let items = [
         recipeSet.amulet,
         recipeSet.armor,
