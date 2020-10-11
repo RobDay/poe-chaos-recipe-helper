@@ -1,4 +1,9 @@
-import { ItemCategory, StashItem, ItemCategoryKeys } from "./models/index";
+import {
+  ItemCategory,
+  StashItem,
+  ItemCategoryKeys,
+  ItemType,
+} from "./models/index";
 
 export type RecipeSet = {
   helmet?: StashItem;
@@ -46,7 +51,9 @@ export default class RecipeManager {
   constructor(items: StashItem[]) {
     console.log("items here are");
     console.log(items);
-    this.items = items;
+    this.items = items.filter((item) => {
+      return item.type === ItemType.Rare;
+    });
   }
 
   _generateItemStatistics(items: StashItem[]) {
