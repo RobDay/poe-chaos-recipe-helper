@@ -17,7 +17,7 @@ export type PropsType = {
 const Container = styled("div", (props: PropsType) => {
   return {
     position: "absolute",
-    opacity: "50%",
+    opacity: "70%",
     backgroundColor: props.color,
     width: props.width,
     height: props.height,
