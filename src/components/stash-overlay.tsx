@@ -7,31 +7,6 @@ import getStashContent from "../client/get-stash-content";
 import RecipeManager, { RecipeSet } from "../recipe-manager";
 import useManageInteractable from "./hooks/use-manage-interactable";
 
-//TODO: Filter in the recipe generator for rate
-const getTempStashItem = (id: string, x: number, y: number): StashItem => {
-  return {
-    type: ItemType.Rare,
-    category: ItemCategory.Amulet,
-    name: "Tacos",
-    ilvl: 2,
-    width: 2,
-    height: 3,
-    identified: true,
-    id,
-    x,
-    y,
-  };
-};
-
-const stashItems = [
-  getTempStashItem("a", 0, 0),
-  getTempStashItem("b", 4, 4),
-  getTempStashItem("c", 7, 4),
-  getTempStashItem("d", 10, 10),
-  getTempStashItem("e", 13, 10),
-  getTempStashItem("f", 17, 17),
-];
-
 const Container = styled("div", {
   backgroundColor: "pink",
   position: "relative",
@@ -51,11 +26,13 @@ type PropsType = {
 
 // TODO: move IPC Calls injected here
 function StashOverlay(props: PropsType) {
-  const [clickedOverlayItems, setClickedOverlayItems] = useState(
-    new Set<StashItem>()
+  const [clickedOverlayItemIDs, setClickedOverlayItemIDs] = useState(
+    new Set<string>()
   );
+  const [currentRecipeSet, setCurrentRecipeSet] = useState<
+    RecipeSet | undefined
+  >();
   const { enableInteractable, disableInteractable } = useManageInteractable();
-
   const [recipeSets, setRecipeSets] = useState(new Array<RecipeSet>());
 
   const getChaosRecipes = async () => {
@@ -74,12 +51,12 @@ function StashOverlay(props: PropsType) {
 
   const onOverlayItemClick = (stashItem: StashItem) => {
     props.onStashOverlayClicked();
-    clickedOverlayItems.add(stashItem);
-    setClickedOverlayItems(new Set(clickedOverlayItems));
+    clickedOverlayItemIDs.add(stashItem.id);
+    setClickedOverlayItemIDs(new Set(clickedOverlayItemIDs));
   };
 
   const onStashItemOverlayMouseEnter = (stashItem: StashItem) => {
-    if (clickedOverlayItems.has(stashItem)) {
+    if (clickedOverlayItemIDs.has(stashItem.id)) {
       console.log("baililng early because already clicked");
       return;
     }
@@ -90,12 +67,6 @@ function StashOverlay(props: PropsType) {
     disableInteractable();
   };
 
-  // const getSizeInPixels = (size: number) => {
-  //   // Check quad
-  //   const cellCount: number = StashWidth.Quad;
-  //   return `${(size * INVENTORY_WIDTH) / cellCount}px`;
-  // };
-
   const getSizeInPixels = (size: number) => {
     // Check quad
     const cellCount: number = StashWidth.Quad;
@@ -103,59 +74,81 @@ function StashOverlay(props: PropsType) {
     return `${cellSize}px`;
   };
 
+  const _getRecipeSetItems = (recipeSet: RecipeSet) => {
+    let items = [
+      recipeSet.amulet,
+      recipeSet.armor,
+      recipeSet.belt,
+      recipeSet.boots,
+      recipeSet.gloves,
+      recipeSet.helmet,
+      recipeSet.ringA,
+      recipeSet.ringB,
+    ];
+    if (recipeSet.twoHandedWeapon) {
+      items.push(recipeSet.twoHandedWeapon);
+    } else {
+      items.push(recipeSet.oneHandedWeaponA);
+      items.push(recipeSet.oneHandedWeaponB);
+    }
+    return items;
+  };
+
+  const _hasAddedAllInSet = (recipeSet: RecipeSet) => {
+    const itemIDs = _getRecipeSetItems(recipeSet).flatMap((item) => {
+      return item && item.id;
+    });
+    let difference = itemIDs.filter(
+      (itemID) => itemID && !clickedOverlayItemIDs.has(itemID)
+    );
+    return difference.length > 0;
+  };
   const renderStashItems = () => {
     console.log("top of render");
-    const firstTwoSets = recipeSets.slice(0, 1).flat();
-    console.log(firstTwoSets);
+    console.log(`we have ${recipeSets.length} sets`);
+    let recipeSet = currentRecipeSet;
+    if ((!recipeSet || _hasAddedAllInSet(recipeSet)) && recipeSets.length > 0) {
+      console.log("in the inner block");
+      recipeSet = recipeSets.shift();
+      setCurrentRecipeSet(recipeSet);
+      setRecipeSets([...recipeSets]);
+    }
+    if (!recipeSet) {
+      console.log("returning early here");
+      return;
+      // Need to exit here as we are done with this pass
+    }
 
-    const itemOverlays = firstTwoSets.map((recipeSet) => {
-      console.log("The chosen recipe set is");
-      console.log(JSON.stringify(recipeSet, null, 2));
-      let items = [
-        recipeSet.amulet,
-        recipeSet.armor,
-        recipeSet.belt,
-        recipeSet.boots,
-        recipeSet.gloves,
-        recipeSet.helmet,
-        recipeSet.ringA,
-        recipeSet.ringB,
-      ];
-      if (recipeSet.twoHandedWeapon) {
-        items.push(recipeSet.twoHandedWeapon);
-      } else {
-        items.push(recipeSet.oneHandedWeaponA);
-        items.push(recipeSet.oneHandedWeaponB);
-      }
-      console.log(`starting with ${stashItems.length}`);
-      return items
-        .filter((item) => {
-          return !!item && !clickedOverlayItems.has(item);
-        })
-        .map((item) => {
-          if (!item) {
-            return null;
-          }
-          const x = getSizeInPixels(item.x);
-          const y = getSizeInPixels(item.y);
-          console.log(`x: ${x}; y: ${y}`);
-          return (
-            <StashItemOverlay
-              width={getSizeInPixels(item.width)}
-              height={getSizeInPixels(item.height)}
-              left={getSizeInPixels(item.x)}
-              top={getSizeInPixels(item.y)}
-              color="orange"
-              onStashItemClicked={onOverlayItemClick}
-              onStashItemOverlayMouseEnter={onStashItemOverlayMouseEnter}
-              onStashItemOverlayMouseExit={onStashItemOverlayMouseExit}
-              item={item}
-            />
-          );
-        });
-    });
-    console.log("rendering: " + itemOverlays.flat().length);
-    return itemOverlays.flat();
+    // console.log("The chosen recipe set is");
+
+    const items = _getRecipeSetItems(recipeSet);
+    // console.log(`starting with ${stashItems.length}`);
+    return items
+      .filter((item) => {
+        return !!item && !clickedOverlayItemIDs.has(item.id);
+      })
+      .map((item) => {
+        if (!item) {
+          return null;
+        }
+        const x = getSizeInPixels(item.x);
+        const y = getSizeInPixels(item.y);
+        console.log(`x: ${x}; y: ${y}`);
+        return (
+          <StashItemOverlay
+            width={getSizeInPixels(item.width)}
+            height={getSizeInPixels(item.height)}
+            left={getSizeInPixels(item.x)}
+            top={getSizeInPixels(item.y)}
+            color="orange"
+            onStashItemClicked={onOverlayItemClick}
+            onStashItemOverlayMouseEnter={onStashItemOverlayMouseEnter}
+            onStashItemOverlayMouseExit={onStashItemOverlayMouseExit}
+            item={item}
+            key={item.id}
+          />
+        );
+      });
   };
 
   return <Container>{renderStashItems()}</Container>;
