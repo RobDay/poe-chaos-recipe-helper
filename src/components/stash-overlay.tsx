@@ -6,7 +6,7 @@ import withElectronClick from "./hoc/with-electron-ipc-comms";
 import getStashContent from "../client/get-stash-content";
 import RecipeManager, { RecipeSet } from "../recipe-manager";
 import useManageInteractable from "./hooks/use-manage-interactable";
-import { unstable_batchedUpdates } from "react-dom";
+import { CATEGORY_COLORS } from "./hooks/constants";
 
 const Container = styled("div", {
   backgroundColor: "pink",
@@ -131,7 +131,7 @@ function StashOverlay(props: PropsType) {
             height={getSizeInPixels(item.height)}
             left={getSizeInPixels(item.x)}
             top={getSizeInPixels(item.y)}
-            color="orange"
+            color={CATEGORY_COLORS[item.category]}
             onStashItemClicked={onOverlayItemClick}
             onStashItemOverlayMouseEnter={onStashItemOverlayMouseEnter}
             onStashItemOverlayMouseExit={onStashItemOverlayMouseExit}

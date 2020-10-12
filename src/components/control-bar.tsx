@@ -2,12 +2,13 @@ import React from "react";
 import { styled } from "styletron-react";
 import chaosOrb from "../images/chaos-orb.png";
 import regalOrb from "../images/regal-orb.png";
+import { BACKGROUND_COLOR } from "./hooks/constants";
 
 const width = "25px";
 const FlexContainer = styled("div", {
   display: "flex",
   height: width,
-  backgroundColor: "white",
+  backgroundColor: BACKGROUND_COLOR,
 });
 
 const SpreadFlexContainer = styled(FlexContainer, {
@@ -17,7 +18,7 @@ const SpreadFlexContainer = styled(FlexContainer, {
 });
 
 const IconBox = styled("div", {
-  border: "solid 1px grey",
+  border: `solid 1px ${BACKGROUND_COLOR}`,
   height: width,
   width: width,
 });
