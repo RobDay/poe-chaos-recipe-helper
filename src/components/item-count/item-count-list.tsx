@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { styled } from "styletron-react";
 
 import { ItemCategory } from "../../models/index";
+import { CATEGORY_COLORS } from "../hooks/constants";
 import ItemCountCell from "./item-count-cell";
 import getStashContent from "../../client/get-stash-content";
 
@@ -50,47 +51,47 @@ export default function ItemCountList(props: PropsType) {
         <SizedItemCountCell
           itemName="🎩"
           itemCount={itemCounts.HELMET}
-          color="red"
+          color={CATEGORY_COLORS[ItemCategory.Helmet]}
         />
         <SizedItemCountCell
           itemName="🥋"
           itemCount={itemCounts.BELT}
-          color="orange"
+          color={CATEGORY_COLORS[ItemCategory.Belt]}
         />
         <SizedItemCountCell
           itemName="🧥"
           itemCount={itemCounts.ARMOR}
-          color="yellow"
+          color={CATEGORY_COLORS[ItemCategory.Armor]}
         />
         <SizedItemCountCell
           itemName="🥊"
           itemCount={itemCounts.GLOVES}
-          color="green"
+          color={CATEGORY_COLORS[ItemCategory.Gloves]}
         />
         <SizedItemCountCell
           itemName="🥾"
-          itemCount={itemCounts.HELMET}
-          color="blue"
+          itemCount={itemCounts.BOOTS}
+          color={CATEGORY_COLORS[ItemCategory.Boots]}
         />
         <SizedItemCountCell
           itemName="⚔️"
           itemCount={itemCounts.ONE_HANDED_WEAPON}
-          color="indigo"
+          color={CATEGORY_COLORS[ItemCategory.OneHandedWeapon]}
         />
         <SizedItemCountCell
           itemName="🏹"
           itemCount={itemCounts.TWO_HANDED_WEAPON}
-          color="violet"
+          color={CATEGORY_COLORS[ItemCategory.TwoHandedWeapon]}
         />
         <SizedItemCountCell
           itemName="💍"
           itemCount={itemCounts.RING}
-          color="cyan"
+          color={CATEGORY_COLORS[ItemCategory.Ring]}
         />
         <SizedItemCountCell
           itemName="📿"
           itemCount={itemCounts.AMULET}
-          color="gray"
+          color={CATEGORY_COLORS[ItemCategory.Amulet]}
         />
       </FlexContainer>
     );
