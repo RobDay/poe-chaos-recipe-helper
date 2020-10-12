@@ -63,7 +63,7 @@ export default function adaptStashAPIResponse(
   response: StashAPIResponse
 ): StashItem[] {
   console.log("response is");
-  console.log(JSON.stringify(response));
+  //   console.log(JSON.stringify(response));
   return response.items
     .map((responseItem) => {
       return {

@@ -78,7 +78,7 @@ export default class RecipeManager {
         return result;
       }, initialState);
     console.log("returning stats");
-    console.log(result);
+    // console.log(result);
     return result;
   }
 

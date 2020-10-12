@@ -6,11 +6,13 @@ app.commandLine.appendSwitch("disable-features", "OutOfBlinkCors");
 
 const path = require("path");
 const url = require("url");
-const {
-  HIDE_INVENTORY_OVERLAY,
-  SHOW_INVENTORY_OVERLAY,
-  REFRESH_STASH_INFO,
-} = require("./constants");
+
+// TODO: These are all duplicates. How do I share them between electron and react
+const HIDE_INVENTORY_OVERLAY = "HIDE_INVENTORY_OVERLAY";
+const SHOW_INVENTORY_OVERLAY = "SHOW_INVENTORY_OVERLAY";
+const REFRESH_STASH_INFO = "REFRESH_STASH_INFO";
+
+const REFRESH_STASH_INFO_PAYLOAD = "REFRESH_STASH_INFO_PAYLOAD";
 // TODO: Figure out how to share constnats with react layer
 const MANAGE_INTERACTION_KEY = "set-ignore-mouse-events";
 
@@ -37,6 +39,7 @@ function createOverlay() {
     },
     // acceptFirstMouse: true
   });
+  overlayWindow.webContents.id = 10;
   overlayWindow.hide();
 
   overlayWindow.setIgnoreMouseEvents(true, { forward: true });
@@ -69,6 +72,7 @@ function createMainWindow() {
       webSecurity: false,
     },
   });
+  mainWindow.webContents.id = 1;
 
   mainWindow.loadURL(
     process.env.ELECTRON_MAIN_START_URL ||
@@ -135,3 +139,5 @@ function registerIPCListeners() {
   });
   ipcMain.on(REFRESH_STASH_INFO, (event, arg) => {});
 }
+
+function fetchInitialData() {}

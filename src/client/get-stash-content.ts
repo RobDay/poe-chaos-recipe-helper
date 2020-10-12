@@ -22,6 +22,5 @@ export default async function getStashContent(
     throw json.reason;
   }
   console.log("made it here");
-  console.log(json);
   return adaptStashAPIResponse(json);
 }
