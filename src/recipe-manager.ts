@@ -49,8 +49,6 @@ export default class RecipeManager {
   items: StashItem[];
 
   constructor(items: StashItem[]) {
-    console.log("items here are");
-    console.log(items);
     this.items = items.filter((item) => {
       return item.type === ItemType.Rare;
     });
@@ -299,12 +297,6 @@ export default class RecipeManager {
       "amulet",
     ];
     for (let deterministicProperty of deterministicProperties) {
-      console.log("Chaos items here is");
-      console.log(this._propertyNameToItemCategory(deterministicProperty));
-      console.log(
-        chaosItems[this._propertyNameToItemCategory(deterministicProperty)!]
-      );
-      console.log(chaosItems["BELT"]);
       if (
         !chaosItems[this._propertyNameToItemCategory(deterministicProperty)!]
       ) {

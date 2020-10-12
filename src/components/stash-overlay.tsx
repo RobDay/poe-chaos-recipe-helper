@@ -6,6 +6,7 @@ import withElectronClick from "./hoc/with-electron-ipc-comms";
 import getStashContent from "../client/get-stash-content";
 import RecipeManager, { RecipeSet } from "../recipe-manager";
 import useManageInteractable from "./hooks/use-manage-interactable";
+import { unstable_batchedUpdates } from "react-dom";
 
 const Container = styled("div", {
   backgroundColor: "pink",
@@ -41,7 +42,8 @@ function StashOverlay(props: PropsType) {
     const recipeManager = new RecipeManager(stashItems);
     const chaosRecipes = recipeManager.getChaosRecipes();
     console.log("Found chaos recipes");
-    console.log(JSON.stringify(chaosRecipes, null, 2));
+    // console.log(JSON.stringify(chaosRecipes, null, 2));
+    console.log(chaosRecipes.length);
     setRecipeSets([...chaosRecipes]);
   };
 
@@ -101,18 +103,9 @@ function StashOverlay(props: PropsType) {
     let difference = itemIDs.filter(
       (itemID) => itemID && !clickedOverlayItemIDs.has(itemID)
     );
-    return difference.length > 0;
+    return difference.length === 0;
   };
   const renderStashItems = () => {
-    console.log("top of render");
-    console.log(`we have ${recipeSets.length} sets`);
-    let recipeSet = currentRecipeSet;
-    if ((!recipeSet || _hasAddedAllInSet(recipeSet)) && recipeSets.length > 0) {
-      console.log("in the inner block");
-      recipeSet = recipeSets.shift();
-      setCurrentRecipeSet(recipeSet);
-      setRecipeSets([...recipeSets]);
-    }
     if (!recipeSet) {
       console.log("returning early here");
       return;
@@ -131,9 +124,7 @@ function StashOverlay(props: PropsType) {
         if (!item) {
           return null;
         }
-        const x = getSizeInPixels(item.x);
-        const y = getSizeInPixels(item.y);
-        console.log(`x: ${x}; y: ${y}`);
+
         return (
           <StashItemOverlay
             width={getSizeInPixels(item.width)}
@@ -150,6 +141,25 @@ function StashOverlay(props: PropsType) {
         );
       });
   };
+
+  console.log("top of render");
+  console.log(`we have ${recipeSets.length} sets`);
+  let recipeSet = currentRecipeSet;
+  if ((!recipeSet || _hasAddedAllInSet(recipeSet)) && recipeSets.length > 0) {
+    // console.log("in the inner block");
+    // console.log(recipeSet);
+    // console.log(recipeSet && _hasAddedAllInSet(recipeSet));
+    recipeSet = recipeSets[0];
+    // console.log("setting a real recipe set here");
+    // console.log(recipeSet);
+    // unstable_batchedUpdates(() => {
+    setCurrentRecipeSet(recipeSet);
+    setRecipeSets(recipeSets.slice(1));
+    // });
+  }
+  if (!currentRecipeSet) {
+    return <div></div>;
+  }
 
   return <Container>{renderStashItems()}</Container>;
 }
