@@ -15,27 +15,45 @@ const SpreadFlexContainer = styled(FlexContainer, {
   justifyContent: "space-between",
   paddingLeft: "2px",
   paddingRight: "2px",
+  alignItems: "center",
 });
 
-const IconBox = styled("div", {
-  border: `solid 1px ${BACKGROUND_COLOR}`,
-  height: width,
-  width: width,
+const IconBox = styled("button", {
+  backgroundColor: "transparent",
+  ":focus": {
+    outline: "none",
+    boxShadow: "none",
+  },
+  marginLeft: "4px",
 });
-export default function ControlBar() {
+
+const RefreshIcon = styled(IconBox, {
+  paddingTop: "0px",
+  filter: "grayscale(70%)",
+});
+
+type PropsType = {
+  onRefreshClicked: () => void;
+  onChaosClicked: () => void;
+  onRegalClicked: () => void;
+};
+export default function ControlBar(props: PropsType) {
   return (
     <SpreadFlexContainer>
       <FlexContainer>
-        <IconBox>
+        <IconBox onClick={props.onChaosClicked}>
           <img width={"20"} src={chaosOrb} alt="Chaos" />
         </IconBox>
-        <IconBox>
+        <IconBox onClick={props.onRegalClicked}>
           <img width={"20"} src={regalOrb} alt="Regal" />
         </IconBox>
       </FlexContainer>
-      <div>
-        <span role="image">🔄</span>
-      </div>
+
+      <RefreshIcon onClick={props.onRefreshClicked}>
+        <span role="image" aria-label="refresh">
+          🔄
+        </span>
+      </RefreshIcon>
     </SpreadFlexContainer>
   );
 }
