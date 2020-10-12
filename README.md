@@ -22,3 +22,4 @@ TODO:
 
 1. Add the ability so that the non-item-overlay items naturally click through rather than propagate
 2. Maybe support two chaos recipes at once. For now, that only works if you just use 2x3 (in total) for each recipe in weapon slots (two daggers or one short bow). Super advanced optimization that will be annoying to write. Would need to sort the recipe response by weapon size. Similarly, would need to optimize the recipe manager to pair these items together
+3. Refactor the stashOverlay to pull the logic out of the layout controller

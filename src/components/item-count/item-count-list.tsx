@@ -9,7 +9,7 @@ import RecipeManager, { StashItemCounts } from "../../recipe-manager";
 
 const boxSize = "50px";
 type PropsType = {
-  itemCounts: StashItemCounts;
+  //   itemCounts: StashItemCounts;
 };
 
 const SizedItemCountCell = styled(ItemCountCell, {

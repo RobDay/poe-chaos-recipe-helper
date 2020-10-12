@@ -126,7 +126,7 @@ export default class RecipeManager {
 
     console.log("Regal Items");
     // console.log(chaosL)
-    console.log(JSON.stringify(regalLevelItems, null, 2));
+    // console.log(JSON.stringify(regalLevelItems, null, 2));
     console.log("!!!");
 
     let chaosRecipeItems: RecipeSet[] = [];
@@ -150,7 +150,7 @@ export default class RecipeManager {
       // TODO: Break this
       let finalRecipeSet;
       console.log("Recipe Set Progress");
-      console.log(JSON.stringify(recipeSet, null, 2));
+      //   console.log(JSON.stringify(recipeSet, null, 2));
       if (this._isRecipeSetComplete(recipeSet)) {
         console.log("Have a complete recipe set. Will replace an item");
         let [newRecipeSet, removedItems] = this._replaceWithChaosItem(
