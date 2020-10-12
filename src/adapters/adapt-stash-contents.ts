@@ -107,7 +107,7 @@ function typelineToItemCategory(
     // 2x3 are one handed unless they are bows
     // 2x4 are always 2h
     // 1x3 are always 1h
-    console.log(`${typeLine} is a one handed weapon`);
+    // console.log(`${typeLine} is a one handed weapon`);
     if (width === 2 && height === 4) {
       return ItemCategory.TwoHandedWeapon;
     } else if (width === 1) {

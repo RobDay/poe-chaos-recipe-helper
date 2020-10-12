@@ -66,3 +66,7 @@ export type StashAPIResponse = {
 export type RefreshStashPayload = {
   items: StashItem[];
 };
+
+export type ToggleInventoryPayload = {
+  type: "Chaos" | "Regal";
+};

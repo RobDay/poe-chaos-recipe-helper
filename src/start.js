@@ -8,8 +8,7 @@ const path = require("path");
 const url = require("url");
 
 // TODO: These are all duplicates. How do I share them between electron and react
-const HIDE_INVENTORY_OVERLAY = "HIDE_INVENTORY_OVERLAY";
-const SHOW_INVENTORY_OVERLAY = "SHOW_INVENTORY_OVERLAY";
+const TOGGLE_INVENTORY_OVERLAY = "TOGGLE_INVENTORY_OVERLAY";
 const REFRESH_STASH_INFO = "REFRESH_STASH_INFO";
 
 const REFRESH_STASH_INFO_PAYLOAD = "REFRESH_STASH_INFO_PAYLOAD";
@@ -131,13 +130,15 @@ function registerIPCListeners() {
     }
   });
 
-  ipcMain.on(HIDE_INVENTORY_OVERLAY, (event, arg) => {
-    overlayWindow.hide();
+  ipcMain.on(REFRESH_STASH_INFO, (event, arg) => {
+    console.log("refresh");
   });
-  ipcMain.on(SHOW_INVENTORY_OVERLAY, (event, arg) => {
-    overlayWindow.show();
+  ipcMain.on(TOGGLE_INVENTORY_OVERLAY, (event, arg) => {
+    console.log("on Toggle Overlay");
+    if (overlayWindow?.isVisible()) {
+      overlayWindow && overlayWindow.hide();
+    } else {
+      overlayWindow && overlayWindow.show();
+    }
   });
-  ipcMain.on(REFRESH_STASH_INFO, (event, arg) => {});
 }
-
-function fetchInitialData() {}

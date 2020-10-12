@@ -127,7 +127,6 @@ export default class RecipeManager {
     console.log("Regal Items");
     // console.log(chaosL)
     // console.log(JSON.stringify(regalLevelItems, null, 2));
-    console.log("!!!");
 
     let chaosRecipeItems: RecipeSet[] = [];
     let regalRecipeItems: RecipeSet[] = [];
