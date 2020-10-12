@@ -33,6 +33,8 @@ function createOverlay() {
     // acceptFirstMouse: true
   });
 
+  overlayWindow.setIgnoreMouseEvents(true, { forward: true });
+
   console.log("here");
   registerIPCListeners();
 
@@ -107,7 +109,6 @@ function registerIPCListeners() {
     console.log(robot.getMousePos());
     // TODO: Need to get osx permissions popup
     robot.mouseClick();
-    overlayWindow.setIgnoreMouseEvents(false);
   });
 
   ipcMain.on(MANAGE_INTERACTION_KEY, (event, arg) => {
