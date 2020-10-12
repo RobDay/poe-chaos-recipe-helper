@@ -9,7 +9,7 @@ const url = require("url");
 // TODO: Figure out how to share constnats with react layer
 const MANAGE_INTERACTION_KEY = "set-ignore-mouse-events";
 
-const mainWindowDefault = false;
+const mainWindowDefault = true;
 let mainWindow;
 let overlayWindow;
 
@@ -55,7 +55,7 @@ function createOverlay() {
 function createMainWindow() {
   mainWindow = new BrowserWindow({
     width: 468,
-    height: 40,
+    height: 70,
     transparent: true,
     frame: false,
     // alwaysOnTop: true,

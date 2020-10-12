@@ -4,7 +4,7 @@ import {
   Route,
   RouteComponentProps,
 } from "react-router-dom";
-import MainComponent from "./primary-component";
+import MainComponent from "./main-component";
 import StashOverlay from "./stash-overlay";
 
 class ViewManager extends Component {
