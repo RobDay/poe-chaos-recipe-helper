@@ -6,6 +6,11 @@ app.commandLine.appendSwitch("disable-features", "OutOfBlinkCors");
 
 const path = require("path");
 const url = require("url");
+const {
+  HIDE_INVENTORY_OVERLAY,
+  SHOW_INVENTORY_OVERLAY,
+  REFRESH_STASH_INFO,
+} = require("./constants");
 // TODO: Figure out how to share constnats with react layer
 const MANAGE_INTERACTION_KEY = "set-ignore-mouse-events";
 
@@ -32,11 +37,11 @@ function createOverlay() {
     },
     // acceptFirstMouse: true
   });
+  overlayWindow.hide();
 
   overlayWindow.setIgnoreMouseEvents(true, { forward: true });
 
   console.log("here");
-  registerIPCListeners();
 
   overlayWindow.loadURL(
     process.env.ELECTRON_OVERLAY_START_URL ||
@@ -86,7 +91,9 @@ app.whenReady().then(() => {
     value: "f7e89fad89933d67520f220634832cc5",
   };
   session.defaultSession.cookies.set(cookie);
-  mainWindowDefault ? createMainWindow() : createOverlay();
+  createMainWindow();
+  createOverlay();
+  registerIPCListeners();
 });
 
 app.on("window-all-closed", () => {
@@ -119,4 +126,12 @@ function registerIPCListeners() {
       overlayWindow.setIgnoreMouseEvents(false);
     }
   });
+
+  ipcMain.on(HIDE_INVENTORY_OVERLAY, (event, arg) => {
+    overlayWindow.hide();
+  });
+  ipcMain.on(SHOW_INVENTORY_OVERLAY, (event, arg) => {
+    overlayWindow.show();
+  });
+  ipcMain.on(REFRESH_STASH_INFO, (event, arg) => {});
 }
