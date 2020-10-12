@@ -54,7 +54,7 @@ function createOverlay() {
 
 function createMainWindow() {
   mainWindow = new BrowserWindow({
-    width: 468,
+    width: 405,
     height: 70,
     transparent: true,
     frame: false,

@@ -7,7 +7,7 @@ import getStashContent from "../../client/get-stash-content";
 
 import RecipeManager, { StashItemCounts } from "../../recipe-manager";
 
-const boxSize = "50px";
+const boxSize = "45px";
 type PropsType = {
   //   itemCounts: StashItemCounts;
 };

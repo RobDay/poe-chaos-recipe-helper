@@ -3,26 +3,38 @@ import { styled } from "styletron-react";
 import chaosOrb from "../images/chaos-orb.png";
 import regalOrb from "../images/regal-orb.png";
 
+const width = "25px";
 const FlexContainer = styled("div", {
   display: "flex",
-  height: "20px",
+  height: width,
   backgroundColor: "white",
+});
+
+const SpreadFlexContainer = styled(FlexContainer, {
+  justifyContent: "space-between",
+  paddingLeft: "2px",
+  paddingRight: "2px",
 });
 
 const IconBox = styled("div", {
   border: "solid 1px grey",
-  height: "20px",
-  width: "20px",
+  height: width,
+  width: width,
 });
 export default function ControlBar() {
   return (
-    <FlexContainer>
-      <IconBox>
-        <img width="20px" src={chaosOrb} alt="Chaos" />
-      </IconBox>
-      <IconBox>
-        <img width="20px" src={regalOrb} alt="Regal" />
-      </IconBox>
-    </FlexContainer>
+    <SpreadFlexContainer>
+      <FlexContainer>
+        <IconBox>
+          <img width={"20"} src={chaosOrb} alt="Chaos" />
+        </IconBox>
+        <IconBox>
+          <img width={"20"} src={regalOrb} alt="Regal" />
+        </IconBox>
+      </FlexContainer>
+      <div>
+        <span role="image">🔄</span>
+      </div>
+    </SpreadFlexContainer>
   );
 }
