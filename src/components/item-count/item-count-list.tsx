@@ -28,12 +28,6 @@ export default function ItemCountList(props: PropsType) {
 
   const getItemCounts = async () => {
     const stashItems = await getStashContent("", 5);
-    // const blah = {
-    //   numTabs: stashContents["numTabs"]!,
-    //   quadTab: stashContents["quadTab"],
-    //   items: stashContents["items"],
-    // };
-    // const stashItems = adaptStashAPIResponse(blah);
     const recipeManager = new RecipeManager(stashItems);
     const itemStats = recipeManager.generateItemStatistics();
     console.log("setting counts to");
