@@ -23,6 +23,6 @@ export const REFRESH_STASH_INFO = "REFRESH_STASH_INFO";
 export const REFRESH_STASH_INFO_PAYLOAD = "REFRESH_STASH_INFO_PAYLOAD";
 
 export enum WindowID {
-  Overlay = 10,
+  Overlay = 2,
   Main = 1,
 }

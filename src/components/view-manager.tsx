@@ -5,13 +5,13 @@ import {
   RouteComponentProps,
 } from "react-router-dom";
 import MainComponent from "./main-component";
-import StashOverlay from "./stash-overlay";
+import StashOverlayWrapper from "./stash-overlay/stash-overlay-wrapper";
 
 class ViewManager extends Component {
   static Views() {
     const result: { [key: string]: any } = {
       mainWindow: <MainComponent />,
-      overlay: <StashOverlay />,
+      overlay: <StashOverlayWrapper />,
     };
 
     return result;

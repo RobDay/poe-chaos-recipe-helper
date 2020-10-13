@@ -14,8 +14,8 @@ function MainComponent() {
   const refreshData = async () => {
     console.log("loading data");
     const stashItems = await getStashContent("", 5);
-    console.log("sending sync");
     //TODO: Remove magic 10
+    console.log("sending refresh to other window");
     ipcRenderer.sendTo(WindowID.Overlay, REFRESH_STASH_INFO_PAYLOAD, {
       items: stashItems,
     });
@@ -36,7 +36,7 @@ function MainComponent() {
       type: "Chaos",
     };
     console.log("sending");
-    ipcRenderer.sendSync(TOGGLE_INVENTORY_OVERLAY, payload);
+    ipcRenderer.send(TOGGLE_INVENTORY_OVERLAY, payload);
     ipcRenderer.sendTo(WindowID.Overlay, TOGGLE_INVENTORY_OVERLAY, payload);
   };
 
@@ -44,7 +44,7 @@ function MainComponent() {
     const payload: ToggleInventoryPayload = {
       type: "Regal",
     };
-    ipcRenderer.sendSync(TOGGLE_INVENTORY_OVERLAY, payload);
+    ipcRenderer.send(TOGGLE_INVENTORY_OVERLAY, payload);
     ipcRenderer.sendTo(WindowID.Overlay, TOGGLE_INVENTORY_OVERLAY, payload);
   };
   const styles = {

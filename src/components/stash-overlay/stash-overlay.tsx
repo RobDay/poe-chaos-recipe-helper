@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { styled } from "styletron-react";
-import StashItemOverlay from "./stash-item-overlay";
-import { ItemCategory, ItemType, StashItem } from "../models/index";
-import withElectronClick from "./hoc/with-electron-ipc-comms";
-import getStashContent from "../client/get-stash-content";
-import RecipeManager, { RecipeSet } from "../recipe-manager";
-import useManageInteractable from "./hooks/use-manage-interactable";
-import { CATEGORY_COLORS } from "./hooks/constants";
+import StashItemOverlay from "../stash-item-overlay";
+import { ItemCategory, ItemType, StashItem } from "../../models/index";
+import withElectronClick from "../hoc/with-electron-ipc-comms";
+import getStashContent from "../../client/get-stash-content";
+import RecipeManager, { RecipeSet } from "../../recipe-manager";
+import useManageInteractable from "../hooks/use-manage-interactable";
+import { CATEGORY_COLORS } from "../hooks/constants";
+const { ipcRenderer } = window.require("electron");
 
 const Container = styled("div", {
   backgroundColor: "pink",
@@ -20,7 +21,7 @@ enum StashWidth {
 }
 
 type PropsType = {
-  // stashItems: StashItem[];
+  stashItems: StashItem[];
   onStashOverlayClicked: () => void;
   // density: StashWidth.Quad;
 };
@@ -36,20 +37,20 @@ function StashOverlay(props: PropsType) {
   const { enableInteractable, disableInteractable } = useManageInteractable();
   const [recipeSets, setRecipeSets] = useState(new Array<RecipeSet>());
 
-  const getChaosRecipes = async () => {
-    const stashItems = await getStashContent("", 5);
-
-    const recipeManager = new RecipeManager(stashItems);
+  useEffect(() => {
+    console.log("in user effect");
+    if (!props.stashItems) {
+      console.log("bailing");
+      return;
+    }
+    const recipeManager = new RecipeManager(props.stashItems);
     const chaosRecipes = recipeManager.getChaosRecipes();
     console.log("Found chaos recipes");
-    // console.log(JSON.stringify(chaosRecipes, null, 2));
     console.log(chaosRecipes.length);
     setRecipeSets([...chaosRecipes]);
-  };
-
-  useEffect(() => {
-    getChaosRecipes();
-  }, []);
+    setClickedOverlayItemIDs(new Set<string>());
+    setCurrentRecipeSet(undefined);
+  }, [props.stashItems]);
 
   const onOverlayItemClick = (stashItem: StashItem) => {
     props.onStashOverlayClicked();
