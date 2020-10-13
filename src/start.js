@@ -23,6 +23,7 @@ function createOverlay() {
   console.log("Creating overlays");
   process.stdout.write("your output to command prompt console or node js ");
   overlayWindow = new BrowserWindow({
+    id: 2,
     width: 560,
     height: 560,
     x: 20,
@@ -38,7 +39,6 @@ function createOverlay() {
     },
     // acceptFirstMouse: true
   });
-  overlayWindow.webContents.id = 10;
   overlayWindow.hide();
 
   overlayWindow.setIgnoreMouseEvents(true, { forward: true });
@@ -64,6 +64,7 @@ function createMainWindow() {
     width: 405,
     height: 70,
     transparent: true,
+    focusable: false,
     frame: false,
     // alwaysOnTop: true,
     webPreferences: {
@@ -135,9 +136,12 @@ function registerIPCListeners() {
   });
   ipcMain.on(TOGGLE_INVENTORY_OVERLAY, (event, arg) => {
     console.log("on Toggle Overlay");
+    console.log(overlayWindow.webContents.id);
     if (overlayWindow?.isVisible()) {
+      console.log("hiding");
       overlayWindow && overlayWindow.hide();
     } else {
+      console.log("showing");
       overlayWindow && overlayWindow.show();
     }
   });
