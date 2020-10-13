@@ -1,4 +1,4 @@
-const { app, BrowserWindow, session } = require("electron");
+const { app, BrowserWindow, session, screen } = require("electron");
 const { ipcMain } = require("electron");
 const robot = require("robotjs");
 
@@ -60,19 +60,29 @@ function createOverlay() {
 }
 
 function createMainWindow() {
+  const width = 405;
+  const height = 70;
+  let display = screen.getPrimaryDisplay();
+  const screenWidth = display.bounds.width;
+  const screenHeight = display.bounds.height;
+  const x = Math.floor(screenWidth / 2 - width / 2);
+  const y = Math.floor(screenHeight - height);
+
   mainWindow = new BrowserWindow({
-    width: 405,
-    height: 70,
+    width,
+    height,
+    x: x,
+    y: y,
+    center: false,
     transparent: true,
     focusable: false,
     frame: false,
-    // alwaysOnTop: true,
+    alwaysOnTop: true,
     webPreferences: {
       nodeIntegration: true,
       webSecurity: false,
     },
   });
-  mainWindow.webContents.id = 1;
 
   mainWindow.loadURL(
     process.env.ELECTRON_MAIN_START_URL ||
