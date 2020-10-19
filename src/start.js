@@ -4,20 +4,24 @@ const robot = require("robotjs");
 
 app.commandLine.appendSwitch("disable-features", "OutOfBlinkCors");
 
-const path = require("path");
-const url = require("url");
+const registerHandlers = require("./electron-comms/index");
+const fs = require("fs");
+const util = require("util");
+const jsyaml = require("js-yaml");
 console.log("BANANA");
 // TODO: These are all duplicates. How do I share them between electron and react
 const TOGGLE_INVENTORY_OVERLAY = "TOGGLE_INVENTORY_OVERLAY";
 const REFRESH_STASH_INFO = "REFRESH_STASH_INFO";
 
 const REFRESH_STASH_INFO_PAYLOAD = "REFRESH_STASH_INFO_PAYLOAD";
+
 // TODO: Figure out how to share constnats with react layer
 const MANAGE_INTERACTION_KEY = "set-ignore-mouse-events";
 
 const mainWindowDefault = true;
 let mainWindow;
 let overlayWindow;
+let configFile;
 
 function createOverlay() {
   console.log("Creating overlays");
@@ -51,7 +55,6 @@ function createOverlay() {
     process.env.ELECTRON_OVERLAY_START_URL ||
       `file://${__dirname}/../build/index.html?overlay`
   );
-  console.log("^^^");
 
   overlayWindow.on("closed", () => {
     overlayWindow = null;
@@ -95,18 +98,6 @@ function createMainWindow() {
     mainWindow = null;
   });
 }
-
-app.whenReady().then(() => {
-  const cookie = {
-    url: "https://www.pathofexile.com",
-    name: "POESESSID",
-    value: "f7e89fad89933d67520f220634832cc5",
-  };
-  session.defaultSession.cookies.set(cookie);
-  createMainWindow();
-  createOverlay();
-  registerIPCListeners();
-});
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
@@ -154,3 +145,25 @@ function registerIPCListeners() {
     }
   });
 }
+
+const whenReady = async () => {
+  const cookie = {
+    url: "https://www.pathofexile.com",
+    name: "POESESSID",
+    value: "f7e89fad89933d67520f220634832cc5",
+  };
+  session.defaultSession.cookies.set(cookie);
+  await loadConfigFile();
+  createMainWindow();
+  createOverlay();
+  registerIPCListeners();
+  registerHandlers();
+};
+
+const loadConfigFile = async () => {
+  const readFile = util.promisify(fs.readFile);
+  const file = await readFile(`${__dirname}/../config.yaml`);
+  configFile = jsyaml.load(file);
+};
+
+app.whenReady().then(whenReady);
