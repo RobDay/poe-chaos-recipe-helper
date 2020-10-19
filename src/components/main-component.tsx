@@ -4,6 +4,7 @@ import getStashContent from "../client/get-stash-content";
 import ItemCountListWrapper from "./item-count/item-count-list-wrapper";
 import {
   REFRESH_STASH_INFO_PAYLOAD,
+  REQUEST_CONFIG,
   TOGGLE_INVENTORY_OVERLAY,
   WindowID,
 } from "./hooks/constants";
@@ -13,6 +14,7 @@ const { ipcRenderer } = window.require("electron");
 function MainComponent() {
   const refreshData = async () => {
     console.log("loading data");
+    const config = await ipcRenderer.send(REQUEST_CONFIG);
     const stashItems = await getStashContent("", 5);
     //TODO: Remove magic 10
     console.log("sending refresh to other window");
