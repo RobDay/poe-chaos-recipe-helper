@@ -3,6 +3,7 @@ window:
   resolutionY: 1080
 
 stash:
+  poeSessID: "1234"
   tabIndex: 4
   quadTab: true
 

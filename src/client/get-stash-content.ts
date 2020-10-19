@@ -10,7 +10,7 @@ export default async function getStashContent(
   // console.log('Called the underlying function');
   // return getValidResponse();
   const url =
-    "https://www.pathofexile.com/character-window/get-stash-items?league=Heist&tabs=0&tabIndex=3&accountName=yousillygoose";
+    "https://www.pathofexile.com/character-window/get-stash-items?league=Heist&tabs=0&tabIndex=4&accountName=yousillygoose";
   console.log(`Fetching ${url}`);
 
   let response = await authedFetch(url);

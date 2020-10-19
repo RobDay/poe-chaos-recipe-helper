@@ -6,7 +6,7 @@ app.commandLine.appendSwitch("disable-features", "OutOfBlinkCors");
 
 const path = require("path");
 const url = require("url");
-
+console.log("BANANA");
 // TODO: These are all duplicates. How do I share them between electron and react
 const TOGGLE_INVENTORY_OVERLAY = "TOGGLE_INVENTORY_OVERLAY";
 const REFRESH_STASH_INFO = "REFRESH_STASH_INFO";
@@ -35,6 +35,7 @@ function createOverlay() {
     focusable: true,
     webPreferences: {
       nodeIntegration: true,
+      enableRemoteModule: true,
       webSecurity: false,
     },
     // acceptFirstMouse: true
@@ -45,14 +46,12 @@ function createOverlay() {
 
   console.log("here");
 
+  console.log("%%%");
   overlayWindow.loadURL(
     process.env.ELECTRON_OVERLAY_START_URL ||
-      url.format({
-        pathname: path.join(__dirname, "/../public/index.html?overlay"),
-        protocol: "file:",
-        slashes: true,
-      })
+      `file://${__dirname}/../build/index.html?overlay`
   );
+  console.log("^^^");
 
   overlayWindow.on("closed", () => {
     overlayWindow = null;
@@ -80,18 +79,17 @@ function createMainWindow() {
     alwaysOnTop: true,
     webPreferences: {
       nodeIntegration: true,
+      enableRemoteModule: true,
       webSecurity: false,
     },
   });
-
+  // mainWindow.loadURL(isDev ? ‘http://localhost:3000' : `file://${__dirname}/../build/index.html`);
+  console.log("!!!");
   mainWindow.loadURL(
     process.env.ELECTRON_MAIN_START_URL ||
-      url.format({
-        pathname: path.join(__dirname, "/../public/index.html?mainWindow"),
-        protocol: "file:",
-        slashes: true,
-      })
+      `file://${__dirname}/../build/index.html?mainWindow`
   );
+  console.log("@@@");
 
   mainWindow.on("closed", () => {
     mainWindow = null;

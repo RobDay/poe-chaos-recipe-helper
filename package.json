@@ -1,4 +1,7 @@
 {
+  "author": "test",
+  "appName": "SUPER",
+  "description": "New test",
   "name": "app",
   "version": "0.1.0",
   "private": true,
@@ -10,13 +13,13 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/styletron-react": "^5.0.2",
     "axios": "^0.20.0",
-    "electron": "^10.1.2",
+    "electron-log": "^4.2.4",
+    "electron-packager": "^15.1.0",
     "enzyme": "^3.11.0",
     "jest-enzyme": "^7.1.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^3.4.3",
     "robotjs": "^0.6.0",
     "styletron-engine-atomic": "^1.4.6",
     "styletron-react": "^5.2.7",
@@ -30,16 +33,22 @@
   },
   "scripts": {
     "start": "nf start -p 3000",
-    "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "rebuild": "npm rebuild --runtime=electron --target=10.1.2 --disturl=https://atom.io/download/atom-shell --abi=72",
     "electron": "electron .",
     "electron-start": "node src/start-react",
+    "ebuild": "npm run build && node_modules/.bin/build",
     "react-start": "BROWSER=none react-scripts start",
     "pack": "build --dir",
     "dist": "npm run build && build",
-    "postinstall": "install-app-deps"
+    "postinstall": "install-app-deps",
+    "react-build": "react-scripts build",
+    "react-test": "react-scripts test --env=jsdom",
+    "react-eject": "react-scripts eject",
+    "electron-build": "electron-builder",
+    "release": "yarn react-build && electron-builder --publish=always",
+    "build": "yarn react-build && yarn electron-build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -57,20 +66,21 @@
     ]
   },
   "devDependencies": {
+    "electron": "^10.1.2",
     "electron-builder": "^22.8.0",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-react": "^7.20.6",
-    "foreman": "^3.0.1"
+    "foreman": "^3.0.1",
+    "react-scripts": "^3.4.3"
   },
   "homepage": "./",
   "main": "src/start.js",
   "build": {
+    "extends": null,
     "appId": "com.electron.electron-with-create-react-app",
-    "win": {
-      "iconUrl": "https://cdn2.iconfinder.com/data/icons/designer-skills/128/react-256.png"
-    },
+    "mac": {},
     "directories": {
       "buildResources": "public"
     }
