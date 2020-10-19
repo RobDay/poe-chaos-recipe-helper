@@ -1,3 +1,5 @@
+import { RecipeSet } from "../recipe-manager";
+
 export enum ItemCategory {
   Helmet = "HELMET",
   Belt = "BELT",
@@ -69,4 +71,49 @@ export type RefreshStashPayload = {
 
 export type ToggleInventoryPayload = {
   type: "Chaos" | "Regal";
+};
+
+export type WindowConfig = {
+  resolutionX: number;
+  resolutionY: number;
+};
+
+export type StashConfig = {
+  tabIndex: number;
+  quadTab: boolean;
+  overlay: {
+    offset: {
+      x: number;
+      y: number;
+      width: number;
+      height: number;
+    };
+  };
+};
+
+export type RecipeConfig = {
+  preferRegal: boolean;
+};
+export type ItemLimitConfig = {
+  default: number;
+  ring?: number;
+  amulet?: number;
+  belt?: number;
+  helmet?: number;
+  armor?: number;
+  oneHand?: number;
+  twoHand?: number;
+  boots?: number;
+  gloves?: number;
+};
+export type FilterConfig = {
+  location: string;
+  itemLimit: ItemLimitConfig;
+};
+
+export type Config = {
+  window: WindowConfig;
+  stash: StashConfig;
+  recipe: RecipeSet;
+  filter: FilterConfig;
 };

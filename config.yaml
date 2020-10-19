@@ -1,0 +1,30 @@
+window:
+  resolutionX: 1920
+  resolutionY: 1080
+
+stash:
+  tabIndex: 4
+  quadTab: true
+
+  overlay:
+    # customize the position of the overlay, assuming it doesnt fit perfectly on your screen size
+    offset:
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+
+recipe:
+  preferRegal: false
+
+# Set limits to the number of items you setup.
+# Valid choices: helmet, ring, amulet, belt, armor, oneHand, twoHand, boots, gloves
+# The default value is uses, unless a slot-specific value is included
+
+filter:
+  location: "/path/to/location"
+  itemLimit:
+    default: 12
+    ring: 24
+    amulet: 24
+    belt: 24
