@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { ToggleInventoryPayload } from "../models/index";
+import { Config, ToggleInventoryPayload } from "../models/index";
 import getStashContent from "../client/get-stash-content";
 import ItemCountListWrapper from "./item-count/item-count-list-wrapper";
 import {
@@ -14,8 +14,13 @@ const { ipcRenderer } = window.require("electron");
 function MainComponent() {
   const refreshData = async () => {
     console.log("loading data");
-    const config = await ipcRenderer.send(REQUEST_CONFIG);
-    const stashItems = await getStashContent("", 5);
+    const config: Config = await ipcRenderer.invoke(REQUEST_CONFIG);
+    console.log("config is");
+    console.log(config);
+    const stashItems = await getStashContent(
+      config.account.username,
+      config.stash.tabIndex
+    );
     //TODO: Remove magic 10
     console.log("sending refresh to other window");
     ipcRenderer.sendTo(WindowID.Overlay, REFRESH_STASH_INFO_PAYLOAD, {

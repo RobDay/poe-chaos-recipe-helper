@@ -2,7 +2,9 @@ const { ipcMain } = require("electron");
 const GET_CONFIG = "GET_CONFIG";
 
 const getConfigHandler = (config) => {
-  ipcMain.on(GET_CONFIG, (event, arg) => {
+  ipcMain.handle(GET_CONFIG, (event, arg) => {
+    console.log("returning a config");
+    console.log(config);
     return config;
   });
 };
