@@ -111,9 +111,15 @@ export type FilterConfig = {
   itemLimit: ItemLimitConfig;
 };
 
+export type AccountConfig = {
+  username: string;
+  poeSessID: string;
+};
+
 export type Config = {
   window: WindowConfig;
   stash: StashConfig;
   recipe: RecipeSet;
   filter: FilterConfig;
+  account: AccountConfig;
 };

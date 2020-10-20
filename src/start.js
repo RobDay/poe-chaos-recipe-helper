@@ -147,17 +147,17 @@ function registerIPCListeners() {
 }
 
 const whenReady = async () => {
+  await loadConfigFile();
   const cookie = {
     url: "https://www.pathofexile.com",
     name: "POESESSID",
-    value: "f7e89fad89933d67520f220634832cc5",
+    value: configFile.account.poeSessID,
   };
   session.defaultSession.cookies.set(cookie);
-  await loadConfigFile();
   createMainWindow();
   createOverlay();
   registerIPCListeners();
-  registerHandlers();
+  registerHandlers(configFile);
 };
 
 const loadConfigFile = async () => {

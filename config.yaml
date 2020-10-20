@@ -3,7 +3,6 @@ window:
   resolutionY: 1080
 
 stash:
-  poeSessID: "1234"
   tabIndex: 4
   quadTab: true
 
@@ -23,9 +22,13 @@ recipe:
 # The default value is uses, unless a slot-specific value is included
 
 filter:
-  location: "/path/to/location"
+  location: /path/to/location
   itemLimit:
     default: 12
     ring: 24
     amulet: 24
     belt: 24
+
+account:
+  username: yousillygoose
+  poeSessID: f7e89fad89933d67520f220634832cc5
