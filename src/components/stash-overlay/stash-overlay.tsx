@@ -147,16 +147,9 @@ function StashOverlay(props: PropsType) {
   console.log(`we have ${recipeSets.length} sets`);
   let recipeSet = currentRecipeSet;
   if ((!recipeSet || _hasAddedAllInSet(recipeSet)) && recipeSets.length > 0) {
-    // console.log("in the inner block");
-    // console.log(recipeSet);
-    // console.log(recipeSet && _hasAddedAllInSet(recipeSet));
     recipeSet = recipeSets[0];
-    // console.log("setting a real recipe set here");
-    // console.log(recipeSet);
-    // unstable_batchedUpdates(() => {
     setCurrentRecipeSet(recipeSet);
     setRecipeSets(recipeSets.slice(1));
-    // });
   }
   if (!currentRecipeSet) {
     return <div></div>;
