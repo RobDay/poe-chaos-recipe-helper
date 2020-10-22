@@ -41,6 +41,10 @@ export default class PartialRecipeManager {
     this.recipeSets = recipeManager.getChaosRecipes();
   }
 
+  hasUsedItem(item: StashItem) {
+    return this.usedStashItemIDs.has(item.id);
+  }
+
   markItemUsedAndGetNewItems(item: StashItem) {
     this.usedStashItemIDs.add(item.id);
     return this.getRecipeItems();

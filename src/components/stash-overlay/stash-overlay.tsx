@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { styled } from "styletron-react";
 import StashItemOverlay from "../stash-item-overlay";
-import { ItemCategory, ItemType, StashItem } from "../../models/index";
+import { StashItem } from "../../models/index";
 import withElectronClick from "../hoc/with-electron-ipc-comms";
-import getStashContent from "../../client/get-stash-content";
-import RecipeManager, { RecipeSet } from "../../recipe-manager";
 import useManageInteractable from "../hooks/use-manage-interactable";
 import { CATEGORY_COLORS } from "../hooks/constants";
-const { ipcRenderer } = window.require("electron");
+import PartialRecipeManager, {
+  PartialRecipeManagerMode,
+} from "./partial-recipe-manager";
 
 const Container = styled("div", {
   backgroundColor: "pink",
@@ -28,14 +28,11 @@ type PropsType = {
 
 // TODO: move IPC Calls injected here
 function StashOverlay(props: PropsType) {
-  const [clickedOverlayItemIDs, setClickedOverlayItemIDs] = useState(
-    new Set<string>()
-  );
-  const [currentRecipeSet, setCurrentRecipeSet] = useState<
-    RecipeSet | undefined
+  const [partialRecipeManager, setPartialRecipeManager] = useState<
+    PartialRecipeManager | undefined
   >();
+  const [currentItems, setCurrentItems] = useState<StashItem[]>([]);
   const { enableInteractable, disableInteractable } = useManageInteractable();
-  const [recipeSets, setRecipeSets] = useState(new Array<RecipeSet>());
 
   useEffect(() => {
     console.log("in user effect");
@@ -43,23 +40,29 @@ function StashOverlay(props: PropsType) {
       console.log("bailing");
       return;
     }
-    const recipeManager = new RecipeManager(props.stashItems);
-    const chaosRecipes = recipeManager.getChaosRecipes();
-    console.log("Found chaos recipes");
-    console.log(chaosRecipes.length);
-    setRecipeSets([...chaosRecipes]);
-    setClickedOverlayItemIDs(new Set<string>());
-    setCurrentRecipeSet(undefined);
+    setPartialRecipeManager(
+      new PartialRecipeManager(props.stashItems, PartialRecipeManagerMode.chaos)
+    );
+    const items = partialRecipeManager?.getRecipeItems();
+    if (items) {
+      setCurrentItems(items);
+    }
   }, [props.stashItems]);
 
   const onOverlayItemClick = (stashItem: StashItem) => {
     props.onStashOverlayClicked();
-    clickedOverlayItemIDs.add(stashItem.id);
-    setClickedOverlayItemIDs(new Set(clickedOverlayItemIDs));
+    const newItems = partialRecipeManager!.markItemUsedAndGetNewItems(
+      stashItem
+    );
+    if (newItems) {
+      setCurrentItems([...newItems]);
+    } else {
+      setCurrentItems([]);
+    }
   };
 
   const onStashItemOverlayMouseEnter = (stashItem: StashItem) => {
-    if (clickedOverlayItemIDs.has(stashItem.id)) {
+    if (partialRecipeManager!.hasUsedItem(stashItem)) {
       console.log("baililng early because already clicked");
       return;
     }
@@ -77,81 +80,36 @@ function StashOverlay(props: PropsType) {
     return `${cellSize}px`;
   };
 
-  const _getRecipeSetItems = (recipeSet: RecipeSet) => {
-    let items = [
-      recipeSet.amulet,
-      recipeSet.armor,
-      recipeSet.belt,
-      recipeSet.boots,
-      recipeSet.gloves,
-      recipeSet.helmet,
-      recipeSet.ringA,
-      recipeSet.ringB,
-    ];
-    if (recipeSet.twoHandedWeapon) {
-      items.push(recipeSet.twoHandedWeapon);
-    } else {
-      items.push(recipeSet.oneHandedWeaponA);
-      items.push(recipeSet.oneHandedWeaponB);
-    }
-    return items;
-  };
-
-  const _hasAddedAllInSet = (recipeSet: RecipeSet) => {
-    const itemIDs = _getRecipeSetItems(recipeSet).flatMap((item) => {
-      return item && item.id;
-    });
-    let difference = itemIDs.filter(
-      (itemID) => itemID && !clickedOverlayItemIDs.has(itemID)
-    );
-    return difference.length === 0;
-  };
   const renderStashItems = () => {
-    if (!recipeSet) {
-      console.log("returning early here");
+    if (currentItems.length === 0) {
+      console.log("No items; Returning early");
       return;
-      // Need to exit here as we are done with this pass
     }
 
-    // console.log("The chosen recipe set is");
+    return currentItems.map((item) => {
+      if (!item) {
+        return null;
+      }
 
-    const items = _getRecipeSetItems(recipeSet);
-    // console.log(`starting with ${stashItems.length}`);
-    return items
-      .filter((item) => {
-        return !!item && !clickedOverlayItemIDs.has(item.id);
-      })
-      .map((item) => {
-        if (!item) {
-          return null;
-        }
-
-        return (
-          <StashItemOverlay
-            width={getSizeInPixels(item.width)}
-            height={getSizeInPixels(item.height)}
-            left={getSizeInPixels(item.x)}
-            top={getSizeInPixels(item.y)}
-            color={CATEGORY_COLORS[item.category]}
-            onStashItemClicked={onOverlayItemClick}
-            onStashItemOverlayMouseEnter={onStashItemOverlayMouseEnter}
-            onStashItemOverlayMouseExit={onStashItemOverlayMouseExit}
-            item={item}
-            key={item.id}
-          />
-        );
-      });
+      return (
+        <StashItemOverlay
+          width={getSizeInPixels(item.width)}
+          height={getSizeInPixels(item.height)}
+          left={getSizeInPixels(item.x)}
+          top={getSizeInPixels(item.y)}
+          color={CATEGORY_COLORS[item.category]}
+          onStashItemClicked={onOverlayItemClick}
+          onStashItemOverlayMouseEnter={onStashItemOverlayMouseEnter}
+          onStashItemOverlayMouseExit={onStashItemOverlayMouseExit}
+          item={item}
+          key={item.id}
+        />
+      );
+    });
   };
 
-  console.log("top of render");
-  console.log(`we have ${recipeSets.length} sets`);
-  let recipeSet = currentRecipeSet;
-  if ((!recipeSet || _hasAddedAllInSet(recipeSet)) && recipeSets.length > 0) {
-    recipeSet = recipeSets[0];
-    setCurrentRecipeSet(recipeSet);
-    setRecipeSets(recipeSets.slice(1));
-  }
-  if (!currentRecipeSet) {
+  const items = partialRecipeManager?.getRecipeItems();
+  if (!items || items.length === 0) {
     return <div></div>;
   }
 
