@@ -2,12 +2,8 @@ import React, { useState, useEffect } from "react";
 import { styled } from "styletron-react";
 import StashItemOverlay from "../stash-item-overlay";
 import { StashItem } from "../../models/index";
-import withElectronClick from "../hoc/with-electron-ipc-comms";
 import useManageInteractable from "../hooks/use-manage-interactable";
 import { CATEGORY_COLORS } from "../hooks/constants";
-import PartialRecipeManager, {
-  PartialRecipeManagerMode,
-} from "./partial-recipe-manager";
 
 const Container = styled("div", {
   backgroundColor: "pink",
@@ -22,50 +18,23 @@ enum StashWidth {
 
 type PropsType = {
   stashItems: StashItem[];
-  onStashOverlayClicked: () => void;
+  onStashOverlayClicked: (stashItem: StashItem) => void;
   // density: StashWidth.Quad;
 };
 
 // TODO: move IPC Calls injected here
 function StashOverlay(props: PropsType) {
-  const [partialRecipeManager, setPartialRecipeManager] = useState<
-    PartialRecipeManager | undefined
-  >();
-  const [currentItems, setCurrentItems] = useState<StashItem[]>([]);
   const { enableInteractable, disableInteractable } = useManageInteractable();
 
-  useEffect(() => {
-    console.log("in user effect");
-    if (!props.stashItems) {
-      console.log("bailing");
-      return;
-    }
-    setPartialRecipeManager(
-      new PartialRecipeManager(props.stashItems, PartialRecipeManagerMode.chaos)
-    );
-    const items = partialRecipeManager?.getRecipeItems();
-    if (items) {
-      setCurrentItems(items);
-    }
-  }, [props.stashItems]);
-
   const onOverlayItemClick = (stashItem: StashItem) => {
-    props.onStashOverlayClicked();
-    const newItems = partialRecipeManager!.markItemUsedAndGetNewItems(
-      stashItem
-    );
-    if (newItems) {
-      setCurrentItems([...newItems]);
-    } else {
-      setCurrentItems([]);
-    }
+    props.onStashOverlayClicked(stashItem);
   };
 
   const onStashItemOverlayMouseEnter = (stashItem: StashItem) => {
-    if (partialRecipeManager!.hasUsedItem(stashItem)) {
-      console.log("baililng early because already clicked");
-      return;
-    }
+    // if (partialRecipeManager!.hasUsedItem(stashItem)) {
+    //   console.log("baililng early because already clicked");
+    //   return;
+    // }
     enableInteractable();
   };
 
@@ -81,12 +50,12 @@ function StashOverlay(props: PropsType) {
   };
 
   const renderStashItems = () => {
-    if (currentItems.length === 0) {
+    if (props.stashItems.length === 0) {
       console.log("No items; Returning early");
       return;
     }
 
-    return currentItems.map((item) => {
+    return props.stashItems.map((item) => {
       if (!item) {
         return null;
       }
@@ -108,12 +77,10 @@ function StashOverlay(props: PropsType) {
     });
   };
 
-  const items = partialRecipeManager?.getRecipeItems();
-  if (!items || items.length === 0) {
+  if (props.stashItems.length === 0) {
     return <div></div>;
   }
 
   return <Container>{renderStashItems()}</Container>;
 }
-
-export default withElectronClick(StashOverlay, "onStashOverlayClicked");
+export default StashOverlay;
