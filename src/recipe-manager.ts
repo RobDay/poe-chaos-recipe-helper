@@ -19,6 +19,20 @@ export type RecipeSet = {
   amulet?: StashItem;
 };
 
+export type CompleteRecipeSet = {
+  helmet: StashItem;
+  belt: StashItem;
+  armor: StashItem;
+  gloves: StashItem;
+  boots: StashItem;
+  oneHandedWeaponA?: StashItem;
+  oneHandedWeaponB?: StashItem;
+  twoHandedWeapon?: StashItem;
+  ringA: StashItem;
+  ringB: StashItem;
+  amulet: StashItem;
+};
+
 export type StashItemCounts = {
   [ItemCategory.Helmet]: number;
   [ItemCategory.Belt]: number;
@@ -128,7 +142,7 @@ export default class RecipeManager {
     // console.log(chaosL)
     // console.log(JSON.stringify(regalLevelItems, null, 2));
 
-    let chaosRecipeItems: RecipeSet[] = [];
+    let chaosRecipeItems: CompleteRecipeSet[] = [];
     let regalRecipeItems: RecipeSet[] = [];
     while (true) {
       let recipeSet: RecipeSet = {};
@@ -150,7 +164,7 @@ export default class RecipeManager {
       let finalRecipeSet;
       console.log("Recipe Set Progress");
       //   console.log(JSON.stringify(recipeSet, null, 2));
-      if (this._isRecipeSetComplete(recipeSet)) {
+      if (RecipeManager.isRecipeSetComplete(recipeSet)) {
         console.log("Have a complete recipe set. Will replace an item");
         let [newRecipeSet, removedItems] = this._replaceWithChaosItem(
           recipeSet,
@@ -170,8 +184,8 @@ export default class RecipeManager {
           chaosLevelItems
         );
       }
-      if (finalRecipeSet && this._isRecipeSetComplete(finalRecipeSet)) {
-        chaosRecipeItems.push(finalRecipeSet);
+      if (finalRecipeSet && RecipeManager.isRecipeSetComplete(finalRecipeSet)) {
+        chaosRecipeItems.push(finalRecipeSet as CompleteRecipeSet);
       } else {
         break;
       }
@@ -360,7 +374,7 @@ export default class RecipeManager {
   }
 
   // TODO: Should this do chaos or regal validation?
-  _isRecipeSetComplete(recipeSet: RecipeSet) {
+  static isRecipeSetComplete(recipeSet: RecipeSet) {
     let requiredSimpleItems =
       recipeSet.helmet &&
       recipeSet.belt &&
