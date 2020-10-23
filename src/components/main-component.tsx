@@ -19,7 +19,8 @@ function MainComponent() {
     console.log(config);
     const stashItems = await getStashContent(
       config.account.username,
-      config.stash.tabIndex
+      config.stash.tabIndex,
+      config.account.league
     );
     //TODO: Remove magic 10
     console.log("sending refresh to other window");

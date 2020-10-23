@@ -31,4 +31,5 @@ filter:
 
 account:
   username: <some_name>
-  poeSessID: <some_sess_id.
+  poeSessID: <some_sess_id>
+  league: Heist

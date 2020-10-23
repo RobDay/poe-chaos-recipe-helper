@@ -114,6 +114,7 @@ export type FilterConfig = {
 export type AccountConfig = {
   username: string;
   poeSessID: string;
+  league: string;
 };
 
 export type Config = {
