@@ -22,7 +22,7 @@ recipe:
 # The default value is uses, unless a slot-specific value is included
 
 filter:
-  location: /path/to/location
+  location: </path/to/location>
   itemLimit:
     default: 12
     ring: 24
@@ -30,5 +30,5 @@ filter:
     belt: 24
 
 account:
-  username: yousillygoose
-  poeSessID: ***REMOVED***
+  username: <some_name>
+  poeSessID: <some_sess_id.

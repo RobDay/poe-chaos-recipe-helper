@@ -1,7 +1,7 @@
 {
-  "name": "electron-react-ts",
+  "name": "maximum-chaos",
   "version": "1.0.0",
-  "description": "New Electron app",
+  "description": "A tool to generate chaos recipes for POE",
   "main": "./dist/main.js",
   "scripts": {
     "dev:electron": "NODE_ENV=development webpack --config webpack.electron.config.js --mode development && electron .",
@@ -14,16 +14,16 @@
     "rebuild": "npm rebuild --runtime=electron --target=10.1.2 --disturl=https://atom.io/download/atom-shell --abi=72"
   },
   "keywords": [],
-  "author": "elisealcala",
-  "license": "ISC",
+  "author": "yousillygoose",
+  "license": "MIT",
   "build": {
     "files": [
       "dist/",
       "node_modules/",
       "package.json"
     ],
-    "productName": "TESTNAME",
-    "appId": "com.example.app",
+    "productName": "Maximum Chaos",
+    "appId": "com.maximumchaos.app",
     "directories": {
       "output": "dist"
     }
