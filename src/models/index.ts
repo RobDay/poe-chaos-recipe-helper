@@ -1,4 +1,4 @@
-import { RecipeSet } from "../recipe-manager";
+import { RecipeSet } from "../../recipe-manager";
 
 export enum ItemCategory {
   Helmet = "HELMET",

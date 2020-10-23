@@ -1,9 +1,4 @@
-import {
-  ItemCategory,
-  StashItem,
-  ItemCategoryKeys,
-  ItemType,
-} from "../../models/index";
+import { StashItem, ItemType } from "../../models/index";
 import RecipeManager, { CompleteRecipeSet } from "../../recipe-manager";
 
 export enum PartialRecipeManagerMode {
@@ -14,8 +9,8 @@ export enum PartialRecipeManagerMode {
 export default class PartialRecipeManager {
   items: StashItem[];
   currentRecipeSet: CompleteRecipeSet | undefined;
-  recipeSets = new Array<CompleteRecipeSet>();
   usedStashItemIDs = new Set<string>();
+  recipeSets = new Array<CompleteRecipeSet>();
   processingUNID = true;
 
   constructor(items: StashItem[], mode: PartialRecipeManagerMode) {
@@ -39,6 +34,7 @@ export default class PartialRecipeManager {
     });
     const recipeManager = new RecipeManager(unidItems);
     this.recipeSets = recipeManager.getChaosRecipes();
+    this._dequeueNextItem();
   }
 
   hasUsedItem(item: StashItem) {

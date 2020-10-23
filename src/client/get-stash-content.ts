@@ -1,6 +1,6 @@
 // @flow
 import authedFetch from "./authed-fetch";
-import { getValidResponse } from "../__tests__/mocks/gets-stashes-response";
+import { getValidResponse } from "../../__tests__/mocks/gets-stashes-response";
 import adaptStashAPIResponse from "../adapters/adapt-stash-contents";
 
 export default async function getStashContent(

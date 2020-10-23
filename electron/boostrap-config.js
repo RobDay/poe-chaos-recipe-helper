@@ -1,8 +1,8 @@
-const fs = require("fs");
-const util = require("util");
-const { app } = require("electron");
-const { dialog } = require("electron");
-const jsyaml = require("js-yaml");
+import fs from "fs"
+import util from "util"
+import { app } from "electron"
+import { dialog } from "electron"
+import jsyaml from "js-yaml"
 
 const loadConfigFile = async () => {
   const configPath = app.getPath("userData") + "/config.yaml";
@@ -11,6 +11,8 @@ const loadConfigFile = async () => {
     await fileAccess(configPath, fs.constants.R_OK);
   } catch {
     const copyFile = util.promisify(fs.copyFile);
+    console.log("Currently in ");
+    console.log(__dirname);
     await copyFile(`${__dirname}/../config.yaml`, configPath);
 
     const options = {
@@ -30,4 +32,4 @@ const loadConfigFile = async () => {
   return configFile;
 };
 
-module.exports = loadConfigFile;
+export default loadConfigFile;

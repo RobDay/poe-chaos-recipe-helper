@@ -12,4 +12,4 @@ const handleClickOverlayItem = (overlayWindow) => {
   });
 };
 
-module.exports = handleClickOverlayItem;
+export default handleClickOverlayItem;

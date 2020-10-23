@@ -40,6 +40,7 @@ export function StashOverlayWrapper(props: PropsType) {
     const newItems = partialRecipeManager!.markItemUsedAndGetNewItems(
       stashItem
     );
+
     if (newItems) {
       setCurrentItems([...newItems]);
     } else {

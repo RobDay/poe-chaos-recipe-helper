@@ -13,4 +13,4 @@ const handleSetInteractable = (overlayWindow) => {
   });
 };
 
-module.exports = handleSetInteractable;
+export default handleSetInteractable;

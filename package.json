@@ -1,87 +1,64 @@
 {
-  "author": "test",
-  "appName": "SUPER",
-  "description": "New test",
-  "name": "app",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "@types/jest": "^26.0.14",
-    "@types/react-router-dom": "^5.1.5",
+  "name": "electron-react-ts",
+  "version": "1.0.0",
+  "description": "New Electron app",
+  "main": "./dist/main.js",
+  "scripts": {
+    "dev:electron": "NODE_ENV=development webpack --config webpack.electron.config.js --mode development && electron .",
+    "dev:react": "NODE_ENV=development webpack-dev-server --config webpack.react.config.js --mode development",
+    "build:electron": "NODE_ENV=production webpack --config webpack.electron.config.js --mode production",
+    "build:react": "NODE_ENV=production webpack --config webpack.react.config.js --mode production",
+    "build": "npm run build:electron && npm run build:react",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "rebuild": "npm rebuild --runtime=electron --target=10.1.2 --disturl=https://atom.io/download/atom-shell --abi=72"
+  },
+  "keywords": [],
+  "author": "elisealcala",
+  "license": "ISC",
+  "build": {
+    "files": [
+      "dist/",
+      "node_modules/",
+      "package.json"
+    ],
+    "productName": "TESTNAME",
+    "appId": "com.example.app",
+    "directories": {
+      "output": "dist"
+    }
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-transform-runtime": "^7.12.1",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/preset-react": "^7.9.4",
+    "@babel/preset-typescript": "^7.9.0",
+    "babel-loader": "^8.1.0",
+    "electron": "^10.1.2",
+    "electron-builder": "^22.8.0",
+    "html-webpack-plugin": "^4.2.0",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/plugin-proposal-decorators": "^7.12.1",
+    "@babel/runtime": "^7.12.1",
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.6",
+    "@types/react-router-dom": "^5.1.6",
+    "@types/styletron-engine-atomic": "^1.1.0",
     "@types/styletron-react": "^5.0.2",
-    "axios": "^0.20.0",
-    "electron-log": "^4.2.4",
-    "electron-packager": "^15.1.0",
-    "enzyme": "^3.11.0",
-    "jest-enzyme": "^7.1.2",
+    "webpack-node-externals": "^2.5.2",
+    "file-loader": "^6.1.1"
+  },
+  "dependencies": {
     "js-yaml": "^3.14.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
     "robotjs": "^0.6.0",
     "styletron-engine-atomic": "^1.4.6",
-    "styletron-react": "^5.2.7",
-    "ts-jest": "^26.4.1",
-    "typescript": "^4.0.3",
-    "universal-cookie": "^4.0.4"
-  },
-  "resolutions": {
-    "**/@typescript-eslint/eslint-plugin": "^4.1.1",
-    "**/@typescript-eslint/parser": "^4.1.1"
-  },
-  "scripts": {
-    "start": "nf start -p 3000",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "rebuild": "npm rebuild --runtime=electron --target=10.1.2 --disturl=https://atom.io/download/atom-shell --abi=72",
-    "electron": "electron .",
-    "electron-start": "node src/start-react",
-    "react-start": "BROWSER=none react-scripts start",
-    "postinstall": "install-app-deps",
-    "react-build": "react-scripts build",
-    "react-test": "react-scripts test --env=jsdom",
-    "react-eject": "react-scripts eject",
-    "electron-build": "electron-builder",
-    "release": "yarn react-build && electron-builder --publish=always",
-    "build": "yarn react-build && yarn electron-build"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "electron": "^10.1.2",
-    "electron-builder": "^22.8.0",
-    "eslint-config-airbnb": "^18.2.0",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-jsx-a11y": "^6.3.1",
-    "eslint-plugin-react": "^7.20.6",
-    "foreman": "^3.0.1",
-    "react-scripts": "^3.4.3"
-  },
-  "homepage": "./",
-  "main": "src/start.js",
-  "build": {
-    "extends": null,
-    "appId": "com.electron.electron-with-create-react-app",
-    "mac": {},
-    "directories": {
-      "buildResources": "public"
-    }
-  },
-  "jest": {}
+    "styletron-react": "^5.2.7"
+  }
 }

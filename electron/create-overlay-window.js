@@ -1,4 +1,11 @@
-const { BrowserWindow } = require("electron");
+import { BrowserWindow } from "electron"
+// const port = process.env.PORT ? process.env.PORT - 100 : 3000
+const port = 3000
+process.env.ELECTRON_ENABLE_LOGGING = true;
+if (process.env.NODE_ENV === "development") {
+  process.env.ELECTRON_MAIN_START_URL = `http://localhost:${port}/?mainWindow`
+process.env.ELECTRON_OVERLAY_START_URL = `http://localhost:${port}/?overlay`
+}
 
 function createOverlay() {
   console.log("Creating overlays");
@@ -30,7 +37,8 @@ function createOverlay() {
   console.log("%%%");
   overlayWindow.loadURL(
     process.env.ELECTRON_OVERLAY_START_URL ||
-      `file://${__dirname}/../build/index.html?overlay`
+      // `file://${__dirname}/../build/index.html?overlay`
+      `file://${__dirname}/index.html?overlay`
   );
 
   //   overlayWindow.on("closed", () => {
@@ -39,4 +47,4 @@ function createOverlay() {
   return overlayWindow;
 }
 
-module.exports = createOverlay;
+export default createOverlay;

@@ -9,4 +9,4 @@ const getConfigHandler = (config) => {
   });
 };
 
-module.exports = getConfigHandler;
+export default getConfigHandler;
