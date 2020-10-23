@@ -1,6 +1,7 @@
 const { app, BrowserWindow, session, screen } = require("electron");
 const { ipcMain } = require("electron");
 const robot = require("robotjs");
+const { dialog } = require("electron");
 
 app.commandLine.appendSwitch("disable-features", "OutOfBlinkCors");
 
@@ -8,17 +9,13 @@ const registerHandlers = require("./electron-comms/index");
 const fs = require("fs");
 const util = require("util");
 const jsyaml = require("js-yaml");
-console.log("BANANA");
 // TODO: These are all duplicates. How do I share them between electron and react
 const TOGGLE_INVENTORY_OVERLAY = "TOGGLE_INVENTORY_OVERLAY";
 const REFRESH_STASH_INFO = "REFRESH_STASH_INFO";
 
-const REFRESH_STASH_INFO_PAYLOAD = "REFRESH_STASH_INFO_PAYLOAD";
-
 // TODO: Figure out how to share constnats with react layer
 const MANAGE_INTERACTION_KEY = "set-ignore-mouse-events";
 
-const mainWindowDefault = true;
 let mainWindow;
 let overlayWindow;
 let configFile;
@@ -161,8 +158,31 @@ const whenReady = async () => {
 };
 
 const loadConfigFile = async () => {
+  console.log("llll");
+  const configPath = app.getPath("userData") + "/config.yaml";
+  console.log("jjjj");
+  const fileAccess = util.promisify(fs.access);
+  console.log("00");
+  try {
+    const fileReadable = await fileAccess(configPath, fs.constants.R_OK);
+  } catch {
+    const copyFile = util.promisify(fs.copyFile);
+    const copied = await copyFile(`${__dirname}/../config.yaml`, configPath);
+
+    const options = {
+      type: "info",
+      buttons: ["Ok"],
+      defaultId: 2,
+      title: "Initial config created",
+      message: `Config file created at ${configPath}. Please edit it based on your account. Restart the app when done`,
+    };
+    console.log("dd");
+    dialog.showMessageBoxSync(null, options);
+    app.exit(0);
+  }
+
   const readFile = util.promisify(fs.readFile);
-  const file = await readFile(`${__dirname}/../config.yaml`);
+  const file = await readFile(configPath);
   configFile = jsyaml.load(file);
 };
 
