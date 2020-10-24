@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styletron-react";
-import { StashItem } from "../models";
+import { StashItem } from "../../shared/models";
 
 export type PropsType = {
   color: string;

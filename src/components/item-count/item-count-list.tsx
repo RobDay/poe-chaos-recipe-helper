@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { styled } from "styletron-react";
 
-import { ItemCategory } from "../../models/index";
+import { ItemCategory } from "../../../shared/models";
 import { CATEGORY_COLORS } from "../hooks/constants";
 import ItemCountCell from "./item-count-cell";
 import getStashContent from "../../client/get-stash-content";

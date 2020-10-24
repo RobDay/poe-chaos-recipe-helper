@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { RefreshStashPayload, StashItem } from "../../models/index";
-import { REFRESH_STASH_INFO_PAYLOAD } from "../hooks/constants";
 import withElectronClick from "../hoc/with-electron-ipc-comms";
+import { IPCAction } from "../../../shared/constants";
 
 import StashOverlay from "./stash-overlay";
 import PartialRecipeManager, {
@@ -20,7 +20,7 @@ export function StashOverlayWrapper(props: PropsType) {
   >();
   useEffect(() => {
     ipcRenderer.on(
-      REFRESH_STASH_INFO_PAYLOAD,
+      IPCAction.stashItemsRefreshed,
       (event: any, payload: RefreshStashPayload) => {
         setStashItems(payload.items);
         setPartialRecipeManager(

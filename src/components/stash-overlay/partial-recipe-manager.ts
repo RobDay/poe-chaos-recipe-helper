@@ -1,4 +1,4 @@
-import { StashItem, ItemType } from "../../models/index";
+import { StashItem, ItemType } from "../../../shared/models";
 import RecipeManager, { CompleteRecipeSet } from "../../recipe-manager";
 
 export enum PartialRecipeManagerMode {

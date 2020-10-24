@@ -1,15 +1,15 @@
-import { MANAGE_INTERACTION_KEY } from "./constants";
+import { IPCAction } from "../../../shared/constants";
 const { ipcRenderer } = window.require("electron");
 
 function useManageInteractable() {
   function enableInteractable() {
     // console.log("sending ignore to false");
-    ipcRenderer.send(MANAGE_INTERACTION_KEY, false);
+    ipcRenderer.send(IPCAction.manageInteractable, false);
   }
 
   function disableInteractable() {
     // console.log("sending ignore to true");
-    ipcRenderer.send(MANAGE_INTERACTION_KEY, true);
+    ipcRenderer.send(IPCAction.manageInteractable, true);
   }
 
   return {

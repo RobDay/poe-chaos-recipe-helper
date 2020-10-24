@@ -1,9 +1,10 @@
 const { ipcMain } = require("electron");
+import { BrowserWindow } from "electron";
+import { IPCAction } from "../../shared/constants";
 // TODO: Figure out how to share constnats with react layer
-const MANAGE_INTERACTION_KEY = "set-ignore-mouse-events";
 
-const handleSetInteractable = (overlayWindow) => {
-  ipcMain.on(MANAGE_INTERACTION_KEY, (event, arg) => {
+const handleSetInteractable = (overlayWindow: BrowserWindow) => {
+  ipcMain.on(IPCAction.manageInteractable, (event: any, arg: any) => {
     console.log("Setting ignore to" + arg);
     if (arg) {
       overlayWindow.setIgnoreMouseEvents(true, { forward: true });

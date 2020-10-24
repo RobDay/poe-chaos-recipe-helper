@@ -1,8 +1,8 @@
-import fs from "fs"
-import util from "util"
-import { app } from "electron"
-import { dialog } from "electron"
-import jsyaml from "js-yaml"
+import fs from "fs";
+import util from "util";
+import { app } from "electron";
+import { dialog } from "electron";
+import jsyaml from "js-yaml";
 
 const loadConfigFile = async () => {
   const configPath = app.getPath("userData") + "/config.yaml";
@@ -22,13 +22,13 @@ const loadConfigFile = async () => {
       title: "Initial config created",
       message: `Config file created at ${configPath}. Please edit it based on your account. Restart the app when done`,
     };
-    dialog.showMessageBoxSync(null, options);
+    dialog.showMessageBoxSync(null!, options);
     app.exit(0);
   }
 
   const readFile = util.promisify(fs.readFile);
   const file = await readFile(configPath);
-  const configFile = jsyaml.load(file);
+  const configFile = jsyaml.load(String(file));
   return configFile;
 };
 

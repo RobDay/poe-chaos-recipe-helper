@@ -1,10 +1,10 @@
-import type {
+import {
   ItemType,
+  ItemCategory,
   StashItem,
   StashAPIContentItem,
   StashAPIResponse,
-} from "../models/index";
-import { ItemCategory } from "../models/index";
+} from "../../shared/models";
 
 const BELT_REGEX: RegExp = /Chain Belt|Rustic Sash|Stygian Vise|Heavy Belt|Leather Belt|Cloth Belt|Studded Belt|Vanguard Belt|Crystal Belt/;
 const RING_REGEX = / Ring$/;

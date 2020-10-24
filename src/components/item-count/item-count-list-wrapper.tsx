@@ -2,7 +2,7 @@ import ItemCountList from "./item-count-list";
 import { RefreshStashPayload, StashItem } from "../../models/index";
 import React, { useEffect, useState } from "react";
 import RecipeManager, { StashItemCounts } from "../../recipe-manager";
-import { REFRESH_STASH_INFO_PAYLOAD } from "../hooks/constants";
+import { IPCAction } from "../../../shared/constants";
 const { ipcRenderer } = window.require("electron");
 
 export default function ItemCountListWrapper() {
@@ -10,7 +10,7 @@ export default function ItemCountListWrapper() {
 
   useEffect(() => {
     ipcRenderer.on(
-      REFRESH_STASH_INFO_PAYLOAD,
+      IPCAction.stashItemsRefreshed,
       (event: any, payload: RefreshStashPayload) => {
         console.log("payload refreshed");
         setStashItems(payload.items);

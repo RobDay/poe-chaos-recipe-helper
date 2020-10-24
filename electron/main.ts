@@ -29,7 +29,7 @@ const whenReady = async () => {
   mainWindow = createMainWindow();
   // mainWindow.webContents.openDevTools();
   overlayWindow = createOverlay();
-  mainWindow.on("closed", () => {
+  mainWindow?.on("closed", () => {
     mainWindow = null;
   });
   overlayWindow.on("closed", () => {

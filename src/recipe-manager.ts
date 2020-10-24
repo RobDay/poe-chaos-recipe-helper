@@ -3,7 +3,7 @@ import {
   StashItem,
   ItemCategoryKeys,
   ItemType,
-} from "./models/index";
+} from "../shared/models";
 
 export type RecipeSet = {
   helmet?: StashItem;
