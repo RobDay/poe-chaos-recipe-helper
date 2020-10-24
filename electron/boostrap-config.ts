@@ -3,6 +3,7 @@ import util from "util";
 import { app } from "electron";
 import { dialog } from "electron";
 import jsyaml from "js-yaml";
+import log from "electron-log";
 
 const loadConfigFile = async () => {
   const configPath = app.getPath("userData") + "/config.yaml";
@@ -11,8 +12,8 @@ const loadConfigFile = async () => {
     await fileAccess(configPath, fs.constants.R_OK);
   } catch {
     const copyFile = util.promisify(fs.copyFile);
-    console.log("Currently in ");
-    console.log(__dirname);
+    log.info("Currently in ");
+    log.info(__dirname);
     await copyFile(`${__dirname}/../config.yaml`, configPath);
 
     const options = {

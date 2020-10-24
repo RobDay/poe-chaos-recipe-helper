@@ -5,21 +5,22 @@ import ItemCountListWrapper from "./item-count/item-count-list-wrapper";
 import { IPCAction } from "../../shared/constants";
 import { WindowID } from "./hooks/constants";
 import ControlBar from "./control-bar";
+import log from "electron-log";
 const { ipcRenderer } = window.require("electron");
 
 function MainComponent() {
   const refreshData = async () => {
-    console.log("loading data");
+    log.info("loading data");
     const config: Config = await ipcRenderer.invoke(IPCAction.requestConfig);
-    console.log("config is");
-    console.log(config);
+    log.info("config is");
+    log.info(config);
     const stashItems = await getStashContent(
       config.account.username,
       config.stash.tabIndex,
       config.account.league
     );
     //TODO: Remove magic 10
-    console.log("sending refresh to other window");
+    log.info("sending refresh to other window");
     ipcRenderer.sendTo(WindowID.Overlay, IPCAction.stashItemsRefreshed, {
       items: stashItems,
     });
@@ -39,7 +40,7 @@ function MainComponent() {
     const payload: ToggleInventoryPayload = {
       type: "Chaos",
     };
-    console.log("sending");
+    log.info("sending");
     ipcRenderer.send(IPCAction.toggleInventoryOverlay, payload);
     ipcRenderer.sendTo(
       WindowID.Overlay,

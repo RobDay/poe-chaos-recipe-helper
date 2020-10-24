@@ -2,17 +2,18 @@ import handleSetInteractable from "./handle-set-interactable";
 
 const { ipcMain } = require("electron");
 import { IPCAction } from "../../shared/constants";
+import log from "electron-log";
 import { BrowserWindow } from "electron";
 
 const handleToggleOverlay = (overlayWindow: BrowserWindow) => {
   ipcMain.on(IPCAction.toggleInventoryOverlay, (event: any, arg: any) => {
-    console.log("on Toggle Overlay");
-    console.log(overlayWindow.webContents.id);
+    log.info("on Toggle Overlay");
+    log.info(overlayWindow.webContents.id);
     if (overlayWindow.isVisible()) {
-      console.log("hiding");
+      log.info("hiding");
       const _ = overlayWindow && overlayWindow.hide();
     } else {
-      console.log("showing");
+      log.info("showing");
       overlayWindow && overlayWindow.show();
     }
   });

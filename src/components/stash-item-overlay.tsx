@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "styletron-react";
 import { StashItem } from "../../shared/models";
+import log from "electron-log";
 
 export type PropsType = {
   color: string;
@@ -31,18 +32,18 @@ export default function StashItemOverlay(props: PropsType) {
     props.onStashItemClicked(props.item);
   };
   const onMouseEnter = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    console.log("mouse enter");
+    log.info("mouse enter");
     props.onStashItemOverlayMouseEnter(props.item);
   };
   const onMouseExit = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    console.log("mouse exit");
+    log.info("mouse exit");
     props.onStashItemOverlayMouseExit(props.item);
   };
   return (
     <Container
       {...props}
       onClick={onClick}
-      // onMouseOut={() => console.log("mouse out")}
+      // onMouseOut={() => log.info("mouse out")}
       onMouseEnter={onMouseEnter}
       onMouseOut={onMouseExit}
     ></Container>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { RefreshStashPayload, StashItem } from "../../models/index";
 import withElectronClick from "../hoc/with-electron-ipc-comms";
+import log from "electron-log";
 import { IPCAction } from "../../../shared/constants";
 
 import StashOverlay from "./stash-overlay";
@@ -49,8 +50,6 @@ export function StashOverlayWrapper(props: PropsType) {
     props.onStashOverlayClicked();
   };
 
-  console.log("rendering with items");
-  console.log(stashItems.length);
   return (
     <StashOverlay
       stashItems={currentItems}

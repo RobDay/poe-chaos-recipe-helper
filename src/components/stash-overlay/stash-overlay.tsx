@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { styled } from "styletron-react";
 import StashItemOverlay from "../stash-item-overlay";
+import log from "electron-log";
 import { StashItem } from "../../../shared/models";
 import useManageInteractable from "../hooks/use-manage-interactable";
 import { CATEGORY_COLORS } from "../hooks/constants";
@@ -47,7 +48,7 @@ function StashOverlay(props: PropsType) {
 
   const renderStashItems = () => {
     if (props.stashItems.length === 0) {
-      console.log("No items; Returning early");
+      log.info("No items; Returning early");
       return;
     }
 

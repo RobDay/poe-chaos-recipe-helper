@@ -54,6 +54,7 @@
   },
   "dependencies": {
     "@types/js-yaml": "^3.12.5",
+    "electron-log": "^4.2.4",
     "js-yaml": "^3.14.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

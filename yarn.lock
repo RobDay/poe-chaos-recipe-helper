@@ -2746,6 +2746,11 @@ electron-builder@^22.8.0:
     update-notifier "^4.1.1"
     yargs "^16.0.3"
 
+electron-log@^4.2.4:
+  version "4.2.4"
+  resolved "https://unpm.uberinternal.com/electron-log/-/electron-log-4.2.4.tgz#a13e42a9fc42ca2cc7d2603c3746352efa82112e"
+  integrity sha1-oT5CqfxCyizH0mA8N0Y1LvqCES4=
+
 electron-publish@22.9.1:
   version "22.9.1"
   resolved "https://unpm.uberinternal.com/electron-publish/-/electron-publish-22.9.1.tgz#7cc76ac4cc53efd29ee31c1e5facb9724329068e"

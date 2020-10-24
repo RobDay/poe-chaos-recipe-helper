@@ -4,6 +4,7 @@ import {
   ItemCategoryKeys,
   ItemType,
 } from "../shared/models";
+import log from "electron-log";
 
 export type RecipeSet = {
   helmet?: StashItem;
@@ -91,13 +92,10 @@ export default class RecipeManager {
         result[item.category] += 1;
         return result;
       }, initialState);
-    console.log("returning stats");
-    // console.log(result);
     return result;
   }
 
   generateItemStatistics() {
-    console.log("generating stats");
     return this._generateItemStatistics(this.items);
   }
 
@@ -119,7 +117,7 @@ export default class RecipeManager {
   // TODO: Need to handle if regal recipe is preferred, maybe?
   getChaosRecipes() {
     // TODO: Figure out consistent casing for this
-    console.log("Generating chaos recipes");
+    log.info("Generating chaos recipes");
     let regalLevelItems = this._generateItemCountObject();
     // TODO: Does this deep copy?
     let chaosLevelItems = this._generateItemCountObject();
@@ -127,20 +125,16 @@ export default class RecipeManager {
     for (let item of this.items) {
       //TODO: This is jsut for testing
       if (item.ilvl > 100) {
-        console.log("pushing regal item");
         regalLevelItems[item.category].push(item);
       } else {
-        console.log("pushing chaos item");
         totalChaosItems += 1;
         chaosLevelItems[item.category].push(item);
       }
     }
 
-    console.log("total chaos items: " + totalChaosItems);
+    log.info("total chaos items: " + totalChaosItems);
 
-    console.log("Regal Items");
-    // console.log(chaosL)
-    // console.log(JSON.stringify(regalLevelItems, null, 2));
+    log.info("Regal Items");
 
     let chaosRecipeItems: CompleteRecipeSet[] = [];
     let regalRecipeItems: RecipeSet[] = [];
@@ -162,10 +156,9 @@ export default class RecipeManager {
 
       // TODO: Break this
       let finalRecipeSet;
-      console.log("Recipe Set Progress");
-      //   console.log(JSON.stringify(recipeSet, null, 2));
+      //   log.info(JSON.stringify(recipeSet, null, 2));
       if (RecipeManager.isRecipeSetComplete(recipeSet)) {
-        console.log("Have a complete recipe set. Will replace an item");
+        log.info("Have a complete recipe set. Will replace an item");
         let [newRecipeSet, removedItems] = this._replaceWithChaosItem(
           recipeSet,
           chaosLevelItems
@@ -178,7 +171,7 @@ export default class RecipeManager {
         }
         finalRecipeSet = newRecipeSet;
       } else {
-        console.log("Have an incomplete recipe set. Will replace an item");
+        log.info("Have an incomplete recipe set. Will replace an item");
         finalRecipeSet = this._fillMissingWithChaosItems(
           recipeSet,
           chaosLevelItems
@@ -313,7 +306,7 @@ export default class RecipeManager {
       if (
         !chaosItems[this._propertyNameToItemCategory(deterministicProperty)!]
       ) {
-        console.log(
+        log.info(
           `no match for ${this._propertyNameToItemCategory(
             deterministicProperty
           )!} and property ${deterministicProperty}`

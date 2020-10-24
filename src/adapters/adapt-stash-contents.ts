@@ -5,6 +5,7 @@ import {
   StashAPIContentItem,
   StashAPIResponse,
 } from "../../shared/models";
+import log from "electron-log";
 
 const BELT_REGEX: RegExp = /Chain Belt|Rustic Sash|Stygian Vise|Heavy Belt|Leather Belt|Cloth Belt|Studded Belt|Vanguard Belt|Crystal Belt/;
 const RING_REGEX = / Ring$/;
@@ -62,8 +63,8 @@ const REGEX_TO_CATEGORY = new Map([
 export default function adaptStashAPIResponse(
   response: StashAPIResponse
 ): StashItem[] {
-  console.log("response is");
-  //   console.log(JSON.stringify(response));
+  log.info("response is");
+  //   log.info(JSON.stringify(response));
   return response.items
     .map((responseItem) => {
       return {
@@ -88,7 +89,7 @@ export default function adaptStashAPIResponse(
     });
 }
 
-// console.log(/^([a-z0-9]{5,})$/.test('abc1'));
+// log.info(/^([a-z0-9]{5,})$/.test('abc1'));
 function typelineToItemCategory(
   typeLine: string,
   width: number,
@@ -107,7 +108,7 @@ function typelineToItemCategory(
     // 2x3 are one handed unless they are bows
     // 2x4 are always 2h
     // 1x3 are always 1h
-    // console.log(`${typeLine} is a one handed weapon`);
+    // log.info(`${typeLine} is a one handed weapon`);
     if (width === 2 && height === 4) {
       return ItemCategory.TwoHandedWeapon;
     } else if (width === 1) {
@@ -119,7 +120,7 @@ function typelineToItemCategory(
   }
 
   if (width !== 1 && height !== 1) {
-    console.log(`No known item category for typeLine: ${typeLine}`);
+    log.info(`No known item category for typeLine: ${typeLine}`);
   }
   return ItemCategory.Unknown;
 }

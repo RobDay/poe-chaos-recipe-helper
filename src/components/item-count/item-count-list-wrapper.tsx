@@ -12,7 +12,7 @@ export default function ItemCountListWrapper() {
     ipcRenderer.on(
       IPCAction.stashItemsRefreshed,
       (event: any, payload: RefreshStashPayload) => {
-        console.log("payload refreshed");
+        log.info("payload refreshed");
         setStashItems(payload.items);
       }
     );

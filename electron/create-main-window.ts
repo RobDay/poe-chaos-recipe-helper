@@ -1,4 +1,5 @@
 const { BrowserWindow, screen } = require("electron");
+import log from "electron-log";
 // const port = process.env.PORT ? process.env.PORT - 100 : 300
 const port = 3000;
 process.env.ELECTRON_ENABLE_LOGGING = "true";
@@ -37,7 +38,7 @@ function createMainWindow() {
       // `file://${__dirname}/../build/index.html?mainWindow`
       `file://${__dirname}/index.html?mainWindow`
   );
-  console.log("@@@");
+  log.info("@@@");
 
   return mainWindow;
 }

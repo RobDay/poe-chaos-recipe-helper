@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { styled } from "styletron-react";
-
+import log from "electron-log";
 import { ItemCategory } from "../../../shared/models";
 import { CATEGORY_COLORS } from "../hooks/constants";
 import ItemCountCell from "./item-count-cell";
@@ -30,8 +30,8 @@ export default function ItemCountList(props: PropsType) {
   //     const stashItems = await getStashContent("", 5);
   //     const recipeManager = new RecipeManager(stashItems);
   //     const itemStats = recipeManager.generateItemStatistics();
-  //     console.log("setting counts to");
-  //     console.log(itemStats);
+  //     log.info("setting counts to");
+  //     log.info(itemStats);
   //     setItemCounts(itemStats);
   //   };
 

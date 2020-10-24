@@ -1,6 +1,7 @@
 // @flow
 import authedFetch from "./authed-fetch";
 import { getValidResponse } from "../../__tests__/mocks/gets-stashes-response";
+import log from "electron-log";
 import adaptStashAPIResponse from "../adapters/adapt-stash-contents";
 
 export default async function getStashContent(
@@ -8,19 +9,19 @@ export default async function getStashContent(
   stashIndex: number,
   league: string
 ): Promise<any> {
-  // console.log('Called the underlying function');
+  // log.info('Called the underlying function');
   // return getValidResponse();
   const url = `https://www.pathofexile.com/character-window/get-stash-items?league=${league}&tabs=0&tabIndex=${stashIndex}&accountName=${username}`;
-  console.log(`Fetching ${url}`);
+  log.info(`Fetching ${url}`);
 
   let response = await authedFetch(url);
-  // console.log("response is");
-  // console.log(JSON.stringify(response));
+  // log.info("response is");
+  // log.info(JSON.stringify(response));
   let json = await response.json();
   if (!response.ok) {
-    console.log("throwing");
+    log.info("throwing");
     throw json.reason;
   }
-  console.log("made it here");
+  log.info("made it here");
   return adaptStashAPIResponse(json);
 }
