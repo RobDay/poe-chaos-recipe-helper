@@ -1,17 +1,16 @@
-import { BrowserWindow } from "electron"
+import { BrowserWindow } from "electron";
 // const port = process.env.PORT ? process.env.PORT - 100 : 3000
-const port = 3000
-process.env.ELECTRON_ENABLE_LOGGING = true;
+const port = 3000;
+process.env.ELECTRON_ENABLE_LOGGING = "true";
 if (process.env.NODE_ENV === "development") {
-  process.env.ELECTRON_MAIN_START_URL = `http://localhost:${port}/?mainWindow`
-process.env.ELECTRON_OVERLAY_START_URL = `http://localhost:${port}/?overlay`
+  process.env.ELECTRON_MAIN_START_URL = `http://localhost:${port}/?mainWindow`;
+  process.env.ELECTRON_OVERLAY_START_URL = `http://localhost:${port}/?overlay`;
 }
 
 function createOverlay() {
   console.log("Creating overlays");
   process.stdout.write("your output to command prompt console or node js ");
   const overlayWindow = new BrowserWindow({
-    id: 2,
     width: 560,
     height: 560,
     x: 20,

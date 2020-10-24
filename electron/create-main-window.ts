@@ -1,12 +1,11 @@
 const { BrowserWindow, screen } = require("electron");
 // const port = process.env.PORT ? process.env.PORT - 100 : 300
-const port = 3000
-process.env.ELECTRON_ENABLE_LOGGING = true;
+const port = 3000;
+process.env.ELECTRON_ENABLE_LOGGING = "true";
 if (process.env.NODE_ENV === "development") {
-  process.env.ELECTRON_MAIN_START_URL = `http://localhost:${port}/?mainWindow`
-process.env.ELECTRON_OVERLAY_START_URL = `http://localhost:${port}/?overlay`
+  process.env.ELECTRON_MAIN_START_URL = `http://localhost:${port}/?mainWindow`;
+  process.env.ELECTRON_OVERLAY_START_URL = `http://localhost:${port}/?overlay`;
 }
-
 
 function createMainWindow() {
   const width = 405;

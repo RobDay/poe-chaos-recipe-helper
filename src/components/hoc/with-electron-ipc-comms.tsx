@@ -1,6 +1,6 @@
 import React from "react";
 const { ipcRenderer } = window.require("electron");
-
+import { IPCAction } from "../../../shared/constants";
 const withElectronClick = <P extends object>(
   WrappedComponent: React.ComponentType<P>,
   clickParamName: string
@@ -9,7 +9,7 @@ const withElectronClick = <P extends object>(
     render() {
       const clickMapper = {
         [clickParamName]: () => {
-          ipcRenderer.sendSync("handle-clicked-stash-overlay-item");
+          ipcRenderer.sendSync(IPCAction.stackOverlayClicked);
         },
       };
       return <WrappedComponent {...(this.props as P)} {...clickMapper} />;

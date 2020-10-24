@@ -1,5 +1,4 @@
-import { ItemCategory } from "../../models/index";
-export const MANAGE_INTERACTION_KEY = "set-ignore-mouse-events";
+import { ItemCategory } from "../../../shared/models";
 
 export const CATEGORY_COLORS = {
   [ItemCategory.Helmet]: "#7a2817",

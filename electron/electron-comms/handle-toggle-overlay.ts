@@ -1,10 +1,11 @@
 import handleSetInteractable from "./handle-set-interactable";
 
 const { ipcMain } = require("electron");
-const TOGGLE_INVENTORY_OVERLAY = "TOGGLE_INVENTORY_OVERLAY";
+import { IPCAction } from "../../shared/constants";
+import { BrowserWindow } from "electron";
 
-const handleToggleOverlay = (overlayWindow) => {
-  ipcMain.on(TOGGLE_INVENTORY_OVERLAY, (event, arg) => {
+const handleToggleOverlay = (overlayWindow: BrowserWindow) => {
+  ipcMain.on(IPCAction.toggleInventoryOverlay, (event: any, arg: any) => {
     console.log("on Toggle Overlay");
     console.log(overlayWindow.webContents.id);
     if (overlayWindow.isVisible()) {

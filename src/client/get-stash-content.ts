@@ -5,11 +5,12 @@ import adaptStashAPIResponse from "../adapters/adapt-stash-contents";
 
 export default async function getStashContent(
   username: string,
-  stashIndex: number
+  stashIndex: number,
+  league: string
 ): Promise<any> {
   // console.log('Called the underlying function');
   // return getValidResponse();
-  const url = `https://www.pathofexile.com/character-window/get-stash-items?league=Heist&tabs=0&tabIndex=${stashIndex}&accountName=${username}`;
+  const url = `https://www.pathofexile.com/character-window/get-stash-items?league=${league}&tabs=0&tabIndex=${stashIndex}&accountName=${username}`;
   console.log(`Fetching ${url}`);
 
   let response = await authedFetch(url);
